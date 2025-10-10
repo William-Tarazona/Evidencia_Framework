@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Merged Document</title>
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      background-color: #e0f2fe;
+    }
+
+    header {
+      background-color: #93c5fd;
+      padding: 10px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    nav img {
+      height: 50px;
+    }
+
+    .nav-buttons button {
+      background-color: #f3f4f6;
+      border: 1px solid #333;
+      border-radius: 5px;
+      padding: 8px 16px;
+      margin: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .nav-buttons button.active {
+      background-color: #2563eb;
+      color: white;
+    }
+
+    .nav-buttons button:hover {
+      background-color: #60a5fa;
+      transition: background-color 0.3s ease;
+    }
+
+    .hero {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+      background-image: linear-gradient(to right, #e0f2fe, #cffafe);
+    }
+
+    .hero-text {
+      max-width: 500px;
+      text-align: center;
+      margin: 20px;
+    }
+
+    .hero-text h1 {
+      font-size: 2rem;
+      margin-bottom: 16px;
+    }
+
+    .hero-text button {
+      background-color: #2563eb;
+      color: white;
+      padding: 12px 24px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .icons-bar {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 150px;
+      left: 10px;
+      gap: 10px;
+    }
+
+    .icons-bar a {
+      font-size: 24px;
+      text-decoration: none;
+    }
+
+    .section {
+      padding: 40px 20px;
+      text-align: center;
+      background-color: #fff;
+      margin-top: 40px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .section h2 {
+      margin-bottom: 24px;
+      font-size: 1.8rem;
+    }
+
+    .content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      opacity: 0; /* para animación JS */
+    }
+
+    .content h3 {
+      font-size: 1.6rem;
+      margin-bottom: 16px;
+    }
+
+    .content ul {
+      list-style-type: none;
+      padding-left: 0;
+      line-height: 1.8;
+    }
+
+    .content li {
+      font-size: 1rem;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+    }
+
+    .content li::before {
+      content: "✔️";
+      margin-right: 10px;
+      font-size: 1.5rem;
+    }
+
+    footer {
+      background-color: #e0f2fe;
+      text-align: center;
+      padding: 20px;
+      border-top: 1px solid #ccc;
+      font-size: 0.9rem;
+    }
+
+    footer nav {
+      margin: 10px 0;
+    }
+
+    footer a {
+      margin: 0 12px;
+      text-decoration: none;
+      color: black;
+    }
+
+    .whatsapp {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #25d366;
+      color: white;
+      padding: 12px;
+      border-radius: 50%;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      font-size: 1.5rem;
+    }
+
+    .privacy-footer {
+      font-size: 0.8rem;
+      color: #555;
+      margin-top: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Barra lateral de redes sociales -->
+<div class="icons-bar">
+  <a href="https://www.instagram.com" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+  <a href="https://www.facebook.com" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+  <a href="https://www.youtube.com" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+  <a href="https://www.linkedin.com" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+  <a href="https://www.twitter.com" target="_blank" title="Twitter"><i class="fab fa-x-twitter"></i></a>
+</div>
+
+  <!-- Encabezado -->
+  <header>
+    <nav>
+      <img src="{% static 'img/LinguaAcademylogo.jpg' %}" alt="LinguaAcademy Logo">
+<div class="nav-buttons">
+  <a href="{% url 'index' %}"><button>Inicio</button></a>
+  <a href="{% url 'nosotros' %}"><button>Nosotros</button></a>
+  <a href="{% url 'cursos' %}"><button>Cursos</button></a>
+  <a href="{% url 'metodologia' %}"><button>Metodología</button></a>
+  <a href="{% url 'profesores' %}"><button>Profesores</button></a>
+  <button id="login-btn">Iniciar sesión</button>
+</div>
+    </nav>
+  </header>
+
+  <!-- Hero principal -->
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Términos del servicio</h1>
+    </div>
+  </section>
+
+  <!-- Contenido de términos del servicio -->
+  <section class="content">
+    <h3>Al registrarte o utilizar los servicios de LinguaAcademy, aceptas los siguientes términos y condiciones:</h3>
+
+    <ul>
+      <li><strong>1. Uso de la plataforma</strong> <br> Los usuarios se comprometen a utilizar los servicios de forma responsable, sin violar derechos de terceros ni realizar actividades ilícitas.</li>
+      <li><strong>2. Acceso a los cursos</strong> <br> El acceso a los cursos está condicionado al registro y, en algunos casos, al pago correspondiente. Los contenidos están disponibles únicamente para uso personal y educativo.</li>
+      <li><strong>3. Pagos y suscripciones</strong> <br> Los pagos deben realizarse a través de los medios autorizados. <br> ✔️ Los cursos adquiridos no son transferibles. <br> ✔️ Las cancelaciones o reembolsos se rigen por nuestra política de reembolsos (enlace si aplica).</li>
+      <li><strong>4. Propiedad intelectual</strong> <br> Todos los materiales, contenidos, diseño y recursos educativos pertenecen a LinguaAcademy o a sus aliados, y no pueden ser copiados, distribuidos ni reutilizados sin autorización.</li>
+      <li><strong>5. Modificaciones del servicio</strong> <br> Nos reservamos el derecho a modificar, suspender o interrumpir parcial o totalmente los servicios, previo aviso a los usuarios cuando sea posible.</li>
+      <li><strong>6. Privacidad</strong> <br> El uso de la plataforma está sujeto a nuestra Política de Privacidad, donde detallamos cómo protegemos tu información personal.</li>
+      <li><strong>7. Comunicaciones</strong> <br> Al registrarte, aceptas recibir notificaciones relacionadas con tu curso, progreso y actualizaciones importantes por correo electrónico o medios internos de la plataforma.</li>
+      <li><strong>8. Ley aplicable</strong> <br> Este servicio se rige por la legislación vigente en Colombia. En caso de conflictos, se buscará una solución amistosa o, de ser necesario, se acudirá a las instancias legales competentes.</li>
+    </ul>
+
+    <p class="privacy-footer">¿Tienes dudas? Puedes contactarnos en: <a href="mailto:soporte@linguaacademy.com">soporte@linguaacademy.com</a></p>
+  </section>
+
+  <!-- WhatsApp -->
+  <a href="https://wa.me/573208112507?text=Hola%2C%20estoy%20interesado%20en%20los%20cursos%20de%20LinguaAcademy" class="whatsapp" target="_blank" title="Contáctanos por WhatsApp">
+    💬
+  </a>
+
+  
+  <!-- Pie de página -->
+<footer id="footer">
+  <nav>
+    <a href="{% url 'index' %}">📦 Plataforma</a>
+    <a href="{% url 'politicas_privacidad' %}">🔒 Políticas de privacidad</a>
+    <a href="{% url 'terminos' %}">📜 Términos del servicio</a>
+    <a href="#">🌐 Idioma</a>
+    <a href="{% url 'soporte' %}">🛡️ Soporte</a>
+  </nav>
+  <p>© 2025 LinguaAcademy. Todos los derechos reservados.</p>
+</footer>
+
+
+  <!-- JavaScript -->
+  <script>
+    // Cambiar color de botón activo
+    const navButtons = document.querySelectorAll('.nav-buttons button');
+    navButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        navButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+
+    const loginBtn = document.getElementById("login-btn");
+if (loginBtn) {
+  loginBtn.addEventListener("click", () => {
+    const loginSection = document.getElementById("login");
+    if (loginSection) {
+      // Si estamos en la misma página con la sección de login
+      loginSection.scrollIntoView({ behavior: "smooth" });
+    } else {
+      // Si estamos en otra página, redirigir
+      window.location.href = "{% url 'pantalla_inicio' %}";
+    }
+  });
+}
+
+
+    // Animación al mostrar contenido
+    const contentSection = document.querySelector('.content');
+    window.addEventListener('load', () => {
+      contentSection.style.transition = 'opacity 1.5s ease-in-out';
+      setTimeout(() => contentSection.style.opacity = 1, 300);
+    });
+
+
+      // Efecto en íconos sociales
+      document.querySelectorAll(".icons-bar a").forEach(icon => {
+        icon.addEventListener("mouseenter", () => {
+          icon.style.transform = "scale(1.2)";
+        });
+        icon.addEventListener("mouseleave", () => {
+          icon.style.transform = "scale(1)";
+        });
+      });
+
+      // WhatsApp dinámico
+      const whatsappLink = document.querySelector(".whatsapp");
+      const phoneNumber = "573208112507"; // Número real
+      const message = encodeURIComponent("¡Hola! Estoy interesado en los cursos de LinguaAcademy.");
+      whatsappLink.href = `https://wa.me/${phoneNumber}?text=${message}`;
+
+  </script>
+
+</body>
+</html>

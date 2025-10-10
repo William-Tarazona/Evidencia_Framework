@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Merged Document</title>
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      background-color: #f3f4f6;
+    }
+
+    header {
+      background-color: #93c5fd;
+      padding: 10px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+    }
+
+    nav img {
+      height: 50px;
+    }
+
+    .nav-buttons button {
+      background-color: #f3f4f6;
+      border: 1px solid #333;
+      border-radius: 5px;
+      padding: 8px 16px;
+      margin: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .nav-buttons button.active {
+      background-color: #2563eb;
+      color: white;
+    }
+
+    .main-container {
+      display: flex;
+      padding: 20px;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #3a3a3a;
+      padding: 20px;
+      color: white;
+      border-radius: 8px;
+      margin-right: 20px;
+    }
+
+    .sidebar a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      font-size: 1.1rem;
+    }
+
+    .sidebar a:hover {
+      background-color: #2563eb;
+    }
+
+    .panel {
+      flex-grow: 1;
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .panel h1 {
+      margin-top: 0;
+    }
+
+    .stats-container {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .stats-card {
+      width: 22%;
+      background-color: #f3f4f6;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .stats-card p {
+      font-size: 1.5rem;
+      margin: 10px 0;
+    }
+
+    .stats-card span {
+      font-size: 1rem;
+      color: #666;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+
+    .actions button {
+      background-color: #2563eb;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      border: none;
+      font-size: 0.9rem;
+    }
+
+    .actions button:hover {
+      background-color: #1d4ed8;
+    }
+
+    .whatsapp {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #25d366;
+      color: white;
+      padding: 12px;
+      border-radius: 50%;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      font-size: 1.5rem;
+    }
+
+    footer {
+      background-color: #e0f2fe;
+      text-align: center;
+      padding: 20px;
+      border-top: 1px solid #ccc;
+      font-size: 0.9rem;
+    }
+
+    footer nav {
+      margin: 10px 0;
+    }
+
+    footer a {
+      margin: 0 12px;
+      text-decoration: none;
+      color: black;
+    }
+
+    /* Tema oscuro */
+    .dark-mode {
+      background-color: #1f2937;
+      color: white;
+    }
+
+    .dark-mode .panel,
+    .dark-mode .stats-card {
+      background-color: #374151;
+      color: white;
+    }
+
+    .dark-mode .sidebar {
+      background-color: #111827;
+    }
+
+    .dark-mode table, .dark-mode th, .dark-mode td {
+      border-color: #4b5563;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Encabezado -->
+  <header>
+    <nav>
+      <img src="{% static 'img/LinguaAcademylogo.jpg' %}" alt="LinguaAcademy Logo">
+<div class="nav-buttons">
+  <a href="{% url 'index' %}"><button>Inicio</button></a>
+  <a href="{% url 'nosotros' %}"><button>Nosotros</button></a>
+  <a href="{% url 'cursos' %}"><button>Cursos</button></a>
+  <a href="{% url 'metodologia' %}"><button>Metodología</button></a>
+  <a href="{% url 'profesores' %}"><button>Profesores</button></a>
+  <a href="{% url 'pantalla_inicio' %}"><button>Cerrar sesión</button></a>
+</div>
+    </nav>
+  </header>
+
+  <!-- Contenedor principal -->
+  <div class="main-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h2>Panel</h2>
+      <a href="#">Usuario y roles</a>
+      <a href="#">Cursos contenido</a>
+      <a href="#">Pagos y recibos</a>
+      <a href="#">Servicios externos</a>
+      <a href="#">Soporte técnico</a>
+    </div>
+
+    <!-- Panel -->
+    <div class="panel">
+      <h1>Panel Administrador</h1>
+
+      <!-- Estadísticas -->
+      <div class="stats-container">
+        <div class="stats-card">
+          <p>400</p>
+          <span>Total de usuarios</span>
+        </div>
+        <div class="stats-card">
+          <p>30</p>
+          <span>Cursos activos</span>
+        </div>
+        <div class="stats-card">
+          <p>15</p>
+          <span>Pagos pendientes</span>
+        </div>
+        <div class="stats-card">
+          <p>3</p>
+          <span>Servicios conectados</span>
+        </div>
+        <div class="stats-card">
+          <p>300</p>
+          <span>Tickets de soporte abiertos</span>
+        </div>
+      </div>
+
+      <!-- Buscador -->
+      <div style="margin-bottom: 20px;">
+        <input type="text" id="searchInput" placeholder="🔍 Buscar por nombre o rol..." style="padding: 10px; width: 100%; max-width: 400px; border-radius: 5px; border: 1px solid #ccc;">
+      </div>
+
+      <!-- Tabla de gestión de usuarios -->
+      <h2>Gestión de roles y usuarios</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Rol</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Jhon Cortés</td>
+            <td>Administrador</td>
+            <td class="actions"><button>✏️ Editar</button></td>
+          </tr>
+          <tr>
+            <td>Luis Contreras</td>
+            <td>Profesor</td>
+            <td class="actions"><button>✏️ Editar</button></td>
+          </tr>
+          <tr>
+            <td>Andrea López</td>
+            <td>Estudiante</td>
+            <td class="actions"><button>✏️ Editar</button></td>
+          </tr>
+          <tr>
+            <td>Alba Lorna</td>
+            <td>Estudiante</td>
+            <td class="actions"><button>✏️ Editar</button></td>
+          </tr>
+          <tr>
+            <td>Tenma Kenzo</td>
+            <td>Profesor</td>
+            <td class="actions"><button>✏️ Editar</button></td>
+          </tr>
+          <tr>
+            <td>Yuusei Akana</td>
+            <td>Profesor</td>
+            <td class="actions"><button>✏️ Editar</button></td>
+          </tr>
+          <tr>
+            <td>Juan Valderrama</td>
+            <td>Administrador</td>
+            <td class="actions"><button>✏️ Editar</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <!-- WhatsApp -->
+  <a href="https://wa.me/573208112507?text=Hola%2C%20necesito%20ayuda%20con%20mi%20curso%20en%20LinguaAcademy" class="whatsapp" target="_blank" title="Contáctanos por WhatsApp">
+    💬
+  </a>
+
+  
+  
+  <!-- Pie de página -->
+<footer id="footer">
+  <nav>
+    <a href="{% url 'index' %}">📦 Plataforma</a>
+    <a href="{% url 'politicas_privacidad' %}">🔒 Políticas de privacidad</a>
+    <a href="{% url 'terminos' %}">📜 Términos del servicio</a>
+    <a href="#">🌐 Idioma</a>
+    <a href="{% url 'soporte' %}">🛡️ Soporte</a>
+  </nav>
+  <p>© 2025 LinguaAcademy. Todos los derechos reservados.</p>
+</footer>
+
+
+  <!-- JavaScript -->
+  <script>
+    // Botón activo en navegación
+    const navButtons = document.querySelectorAll('.nav-buttons button');
+    navButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        navButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+
+    // Confirmación al editar
+    const editButtons = document.querySelectorAll('.actions button');
+    editButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const nombre = button.closest('tr').querySelector('td').textContent;
+        const confirmEdit = confirm(`¿Deseas editar a ${nombre}?`);
+        if (confirmEdit) {
+          alert(`Redirigiendo a edición de ${nombre}...`);
+        }
+      });
+    });
+
+    // Filtro por nombre o rol
+    const searchInput = document.getElementById('searchInput');
+    const tableRows = document.querySelectorAll('table tbody tr');
+    searchInput.addEventListener('input', () => {
+      const filter = searchInput.value.toLowerCase();
+      tableRows.forEach(row => {
+        const name = row.cells[0].textContent.toLowerCase();
+        const role = row.cells[1].textContent.toLowerCase();
+        row.style.display = name.includes(filter) || role.includes(filter) ? '' : 'none';
+      });
+    });
+
+    // Función para cerrar sesión y redirigir
+    function cerrarSesion() {
+      // Aquí podrías limpiar localStorage o cookies si manejas sesiones
+      alert("Sesión cerrada correctamente.");
+      window.location.href = "{% url 'pantalla_inicio' %}";
+    }
+
+    
+      // WhatsApp dinámico
+      const whatsappLink = document.querySelector(".whatsapp");
+      const phoneNumber = "573208112507"; // Número real
+      const message = encodeURIComponent("¡Hola! Estoy interesado en los cursos de LinguaAcademy.");
+      whatsappLink.href = `https://wa.me/${phoneNumber}?text=${message}`;
+
+  </script>
+</body>
+</html>

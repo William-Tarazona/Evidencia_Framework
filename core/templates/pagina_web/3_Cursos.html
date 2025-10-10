@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="es">
+{% load static %}
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cursos - LinguaAcademy</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(to bottom, #e0f2fe, #fef9c3);
+      color: #1f2937;
+    }
+
+    header {
+      background-color: #93c5fd;
+      padding: 10px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    nav img {
+      height: 50px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .nav-buttons button, .nav-buttons a {
+      background-color: #f3f4f6;
+      border: 1px solid #333;
+      border-radius: 5px;
+      padding: 8px 16px;
+      margin: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      text-decoration: none;
+      color: #1f2937;
+      display: inline-block;
+    }
+
+    .nav-buttons a button {
+      background: none;
+      border: none;
+      padding: 0;
+      margin: 0;
+      font-weight: bold;
+      color: #1f2937;
+      cursor: pointer;
+    }
+
+    .icons-bar {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 150px;
+      left: 10px;
+      gap: 10px;
+      z-index: 200;
+    }
+
+    .icons-bar a {
+      font-size: 24px;
+      text-decoration: none;
+      color: #374151;
+      transition: transform 0.3s ease, color 0.2s ease;
+    }
+
+    .icons-bar a:hover {
+      transform: scale(1.2);
+      color: #1e3a8a;
+    }
+
+    .cursos {
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .cursos h2 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      color: #4b5563;
+    }
+
+    .cursos p {
+      max-width: 900px;
+      margin: 0 auto 30px auto;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #374151;
+    }
+
+    .mensaje {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: bold;
+      animation: slideDown 0.3s ease;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .mensaje.success {
+      background-color: #d1fae5;
+      color: #065f46;
+      border: 2px solid #10b981;
+    }
+
+    .mensaje.warning {
+      background-color: #fef3c7;
+      color: #92400e;
+      border: 2px solid #f59e0b;
+    }
+
+    .mensaje.error {
+      background-color: #fee2e2;
+      color: #991b1b;
+      border: 2px solid #ef4444;
+    }
+
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background-color: #ffffffcc;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 280px;
+      min-height: 500px;
+      padding: 20px;
+      text-align: left;
+      transition: transform 0.2s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    .card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      color: #1f2937;
+      text-align: center;
+      border-bottom: 2px solid #93c5fd;
+      padding-bottom: 10px;
+    }
+
+    .niveles-lista {
+      margin: 15px 0;
+      flex: 1;
+    }
+
+    .nivel-item {
+      background-color: #f3f4f6;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-left: 4px solid #93c5fd;
+      transition: background-color 0.2s ease;
+    }
+
+    .nivel-item:hover {
+      background-color: #e5e7eb;
+    }
+
+    .nivel-info {
+      flex: 1;
+    }
+
+    .nivel-nombre {
+      font-weight: bold;
+      color: #1f2937;
+      font-size: 1rem;
+    }
+
+    .nivel-modalidad {
+      font-size: 0.85rem;
+      color: #6b7280;
+      margin-top: 3px;
+    }
+
+    .btn-inscribir {
+      background-color: #93c5fd;
+      border: none;
+      padding: 8px 15px;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+      font-size: 0.9rem;
+    }
+
+    .btn-inscribir:hover {
+      background-color: #60a5fa;
+      color: white;
+      transform: scale(1.05);
+    }
+
+    .btn-inscribir:active {
+      transform: scale(0.98);
+    }
+
+    footer {
+      background-color: #fcd34d;
+      text-align: center;
+      padding: 20px;
+      border-top: 2px solid #000;
+      margin-top: 40px;
+    }
+
+    footer nav a {
+      margin: 0 10px;
+      text-decoration: none;
+      font-size: 0.95rem;
+      color: black;
+      transition: color 0.2s ease;
+    }
+
+    footer nav a:hover {
+      color: #374151;
+    }
+
+    .whatsapp {
+      position: fixed;
+      width: 60px;
+      height: 60px;
+      bottom: 20px;
+      right: 20px;
+      background-color: #25d366;
+      color: #FFF;
+      border-radius: 50px;
+      text-align: center;
+      font-size: 30px;
+      box-shadow: 2px 2px 3px #999;
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      transition: transform 0.2s ease;
+    }
+
+    .whatsapp:hover {
+      transform: scale(1.1);
+    }
+
+    /* Modal de confirmación */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      max-width: 500px;
+      text-align: center;
+    }
+
+    .modal-content h3 {
+      margin-bottom: 20px;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .modal-buttons button {
+      padding: 10px 25px;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .btn-confirmar {
+      background-color: #16a34a;
+      color: white;
+    }
+
+    .btn-confirmar:hover {
+      background-color: #15803d;
+    }
+
+    .btn-cancelar {
+      background-color: #dc2626;
+      color: white;
+    }
+
+    .btn-cancelar:hover {
+      background-color: #b91c1c;
+    }
+
+    @media screen and (max-width: 768px) {
+      .cursos {
+        padding: 30px 10px;
+      }
+
+      .cursos h2 {
+        font-size: 1.75rem;
+      }
+
+      .cursos p {
+        font-size: 1rem;
+      }
+
+      .cards {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .card {
+        width: 90%;
+      }
+
+      .nivel-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .btn-inscribir {
+        width: 100%;
+      }
+
+      footer nav a {
+        display: block;
+        margin: 5px 0;
+      }
+
+      nav {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-buttons {
+        justify-content: center;
+      }
+
+      .icons-bar {
+        position: static;
+        flex-direction: row;
+        justify-content: center;
+        padding: 10px 0;
+      }
+
+      .modal-content {
+        margin: 20px;
+        max-width: 90%;
+      }
+
+      .modal-buttons {
+        flex-direction: column;
+      }
+
+      .modal-buttons button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <nav>
+      <img src="{% static 'img/LinguaAcademylogo.jpg' %}" alt="Logo LinguaAcademy" />
+      <div class="nav-buttons">
+        <a href="{% url 'index' %}"><button>Inicio</button></a>
+        <a href="{% url 'nosotros' %}"><button>Nosotros</button></a>
+        <a href="{% url 'cursos' %}"><button>Cursos</button></a>
+        <a href="{% url 'metodologia' %}"><button>Metodología</button></a>
+        <a href="{% url 'profesores' %}"><button>Profesores</button></a>
+        <button id="login-btn">Iniciar sesión</button>
+      </div>
+    </nav>
+  </header>
+
+  <div class="icons-bar">
+    <a href="https://www.instagram.com" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.facebook.com" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://www.youtube.com" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+    <a href="https://www.linkedin.com" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+    <a href="https://www.twitter.com" target="_blank" title="Twitter"><i class="fab fa-x-twitter"></i></a>
+  </div>
+
+  <section class="cursos">
+    <h2>🧑‍🏫 Nuestros cursos de idiomas</h2>
+    <p>
+      En LinguaAcademy, ofrecemos una formación completa en los idiomas más hablados y valorados a nivel mundial.
+      Nuestros cursos están estructurados por niveles oficiales (MCER y JLPT), e incluyen clases prácticas, recursos digitales,
+      actividades interactivas y acompañamiento personalizado para que avances a tu ritmo y logres tus metas lingüísticas.
+    </p>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="mensaje {{ message.tags }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <div class="cards">
+      {% for idioma, cursos in cursos_agrupados.items %}
+      <div class="card">
+        {% if idioma == "Español" %}
+          <img src="{% static 'img/espanol.jpg' %}" alt="Curso {{ idioma }}" />
+        {% elif idioma == "Inglés" %}
+          <img src="{% static 'img/ingles.jpg' %}" alt="Curso {{ idioma }}" />
+        {% elif idioma == "Italiano" %}
+          <img src="{% static 'img/italiano.jpg' %}" alt="Curso {{ idioma }}" />
+        {% elif idioma == "Japonés" %}
+          <img src="{% static 'img/japones.jpg' %}" alt="Curso {{ idioma }}" />
+        {% else %}
+          <img src="{% static 'img/default.jpg' %}" alt="Curso {{ idioma }}" />
+        {% endif %}
+        
+        <h3>{{ idioma }}</h3>
+        
+        <div class="niveles-lista">
+          {% for curso in cursos %}
+          <div class="nivel-item">
+            <div class="nivel-info">
+              <div class="nivel-nombre">
+                {% if idioma == "Japonés" %}
+                  {% if curso.Nivel_mcerl == "A1" %}Nivel N5
+                  {% elif curso.Nivel_mcerl == "A2" %}Nivel N4
+                  {% elif curso.Nivel_mcerl == "B1" %}Nivel N3
+                  {% elif curso.Nivel_mcerl == "B2" %}Nivel N2
+                  {% else %}Nivel {{ curso.Nivel_mcerl }}
+                  {% endif %}
+                {% else %}
+                  Nivel {{ curso.Nivel_mcerl }}
+                {% endif %}
+              </div>
+              <div class="nivel-modalidad">📚 {{ curso.get_Modalidad_display }}</div>
+            </div>
+            <form method="post" action="{% url 'inscribirse_curso' curso.idCurso %}" style="margin: 0;">
+              {% csrf_token %}
+              <button type="submit" class="btn-inscribir">Inscribirse</button>
+            </form>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% empty %}
+      <div class="mensaje warning">
+        <p>No hay cursos disponibles en este momento. Por favor, contacta al administrador.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <footer id="footer">
+    <nav>
+      <a href="{% url 'index' %}">📦 Plataforma</a>
+      <a href="{% url 'politicas_privacidad' %}">🔒 Políticas de privacidad</a>
+      <a href="{% url 'terminos' %}">📜 Términos del servicio</a>
+      <a href="#">🌐 Idioma</a>
+      <a href="{% url 'soporte' %}">🛡️ Soporte</a>
+    </nav>
+    <p>© 2025 LinguaAcademy. Todos los derechos reservados.</p>
+  </footer>
+
+  <a href="https://wa.me/573208112507?text=Hola%2C%20necesito%20ayuda%20con%20mi%20curso%20en%20LinguaAcademy" class="whatsapp" target="_blank" title="Contáctanos por WhatsApp">
+    💬
+  </a>
+
+  <!-- Modal de confirmación -->
+  <div id="modal-confirmacion" class="modal-overlay">
+    <div class="modal-content">
+      <h3 id="modal-mensaje">¿Estás seguro?</h3>
+      <div class="modal-buttons">
+        <button class="btn-confirmar" id="btn-confirmar">Sí, inscribirme</button>
+        <button class="btn-cancelar" id="btn-cancelar">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const loginBtn = document.getElementById("login-btn");
+    if (loginBtn) {
+      loginBtn.addEventListener("click", () => {
+        window.location.href = "{% url 'pantalla_inicio' %}";
+      });
+    }
+
+    document.querySelectorAll(".icons-bar a").forEach(icon => {
+      icon.addEventListener("mouseenter", () => {
+        icon.style.transform = "scale(1.2)";
+      });
+      icon.addEventListener("mouseleave", () => {
+        icon.style.transform = "scale(1)";
+      });
+    });
+
+    const mensajes = document.querySelectorAll('.mensaje');
+    mensajes.forEach(mensaje => {
+      setTimeout(() => {
+        mensaje.style.transition = 'opacity 0.5s ease';
+        mensaje.style.opacity = '0';
+        setTimeout(() => mensaje.remove(), 500);
+      }, 5000);
+    });
+
+    // Modal de confirmación para inscripción
+    const modal = document.getElementById('modal-confirmacion');
+    const modalMensaje = document.getElementById('modal-mensaje');
+    const btnConfirmar = document.getElementById('btn-confirmar');
+    const btnCancelar = document.getElementById('btn-cancelar');
+    let formularioActual = null;
+
+    document.querySelectorAll('form[action*="inscribirse"]').forEach(form => {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const cursoInfo = this.closest('.nivel-item').querySelector('.nivel-nombre').textContent;
+        const idiomaInfo = this.closest('.card').querySelector('h3').textContent;
+        const nombreUsuario = "{{ usuario.Nombres|default:'Usuario' }}";
+        
+        modalMensaje.innerHTML = `
+          <strong>Hola ${nombreUsuario}</strong><br><br>
+          ¿Estás seguro de inscribirte al curso de<br>
+          <strong>${idiomaInfo} - ${cursoInfo}</strong>?
+        `;
+        
+        formularioActual = this;
+        modal.classList.add('active');
+      });
+    });
+
+    btnConfirmar.addEventListener('click', function() {
+      if (formularioActual) {
+        formularioActual.submit();
+      }
+    });
+
+    btnCancelar.addEventListener('click', function() {
+      modal.classList.remove('active');
+      formularioActual = null;
+    });
+
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) {
+        modal.classList.remove('active');
+        formularioActual = null;
+      }
+    });
+  </script>
+</body>
+</html>

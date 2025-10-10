@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+{% load static %}
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro - LinguaAcademy</title>
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      background-color: #e0f2fe;
+    }
+
+    header {
+      background-color: #93c5fd;
+      padding: 10px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    nav img {
+      height: 50px;
+    }
+
+    .nav-buttons button {
+      background-color: #f3f4f6;
+      border: 1px solid #333;
+      border-radius: 5px;
+      padding: 8px 16px;
+      margin: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .icons-bar {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 150px;
+      left: 10px;
+      gap: 10px;
+      font-size: 24px;
+      z-index: 10;
+    }
+
+    .icons-bar a {
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.3s ease;
+    }
+
+    .form-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+      min-height: 80vh;
+    }
+
+    .form-container {
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 450px;
+    }
+
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 24px;
+      color: #1e40af;
+    }
+
+    .form-container label {
+      font-weight: bold;
+      display: block;
+      margin: 12px 0 4px;
+    }
+
+    .form-container input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+
+    .form-container input:focus {
+      outline: none;
+      border-color: #3b82f6;
+    }
+
+    .form-container button {
+      width: 100%;
+      padding: 12px;
+      background-color: #16a34a;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 8px;
+    }
+
+    .form-container button:hover {
+      background-color: #15803d;
+    }
+
+    .alert {
+      padding: 12px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    .alert-error {
+      background-color: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+
+    .alert-success {
+      background-color: #d1fae5;
+      color: #065f46;
+      border: 1px solid #6ee7b7;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 16px;
+      color: #555;
+    }
+
+    .login-link a {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      background-color: #e0f2fe;
+      text-align: center;
+      padding: 20px;
+      border-top: 1px solid #ccc;
+      font-size: 0.9rem;
+    }
+
+    footer nav {
+      margin: 10px 0;
+    }
+
+    footer a {
+      margin: 0 12px;
+      text-decoration: none;
+      color: black;
+    }
+
+    .whatsapp {
+      position: fixed;
+      width: 60px;
+      height: 60px;
+      bottom: 20px;
+      right: 20px;
+      background-color: #25d366;
+      color: #fff;
+      border-radius: 50%;
+      text-align: center;
+      font-size: 30px;
+      box-shadow: 2px 2px 3px #999;
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .whatsapp:hover {
+      background-color: #1ebe5d;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Barra lateral redes sociales -->
+  <div class="icons-bar">
+    <a href="https://www.instagram.com" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.facebook.com" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://www.youtube.com" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+    <a href="https://www.linkedin.com" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+    <a href="https://www.twitter.com" target="_blank" title="Twitter"><i class="fab fa-x-twitter"></i></a>
+  </div>
+
+  <!-- Encabezado -->
+  <header>
+    <nav>
+      <img src="{% static 'img/LinguaAcademylogo.jpg' %}" alt="LinguaAcademy Logo" />
+      <div class="nav-buttons">
+        <a href="{% url 'index' %}"><button>Inicio</button></a>
+        <a href="{% url 'nosotros' %}"><button>Nosotros</button></a>
+        <a href="{% url 'cursos' %}"><button>Cursos</button></a>
+        <a href="{% url 'metodologia' %}"><button>Metodología</button></a>
+        <a href="{% url 'profesores' %}"><button>Profesores</button></a>
+        <button id="login-btn">Iniciar sesión</button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Sección de registro -->
+  <section class="form-section">
+    <div class="form-container">
+      <h2>Crear cuenta</h2>
+
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <form method="POST" action="{% url 'registro' %}">
+        {% csrf_token %}
+        
+        <label for="nombres">Nombres:</label>
+        <input type="text" id="nombres" name="nombres" required placeholder="Ej: Juan Carlos">
+
+        <label for="apellidos">Apellidos:</label>
+        <input type="text" id="apellidos" name="apellidos" required placeholder="Ej: Pérez García">
+
+        <label for="correo">Correo electrónico:</label>
+        <input type="email" id="correo" name="correo" required placeholder="tu@email.com">
+
+        <label for="contrasena">Contraseña (mínimo 6 caracteres):</label>
+        <input type="password" id="contrasena" name="contrasena" required>
+
+        <label for="contrasena2">Confirmar contraseña:</label>
+        <input type="password" id="contrasena2" name="contrasena2" required>
+
+        <button type="submit">Registrarse</button>
+      </form>
+
+      <div class="login-link">
+        <p>¿Ya tienes cuenta? <a href="{% url 'pantalla_inicio' %}">Inicia sesión aquí</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pie de página -->
+  <footer id="footer">
+    <nav>
+      <a href="{% url 'index' %}">📦 Plataforma</a>
+      <a href="{% url 'politicas_privacidad' %}">🔒 Políticas de privacidad</a>
+      <a href="{% url 'terminos' %}">📜 Términos del servicio</a>
+      <a href="#">🌐 Idioma</a>
+      <a href="{% url 'soporte' %}">🛡️ Soporte</a>
+    </nav>
+    <p>© 2025 LinguaAcademy. Todos los derechos reservados.</p>
+  </footer>
+
+  <!-- WhatsApp -->
+  <a href="https://wa.me/573208112507?text=Hola%2C%20necesito%20ayuda%20con%20mi%20curso%20en%20LinguaAcademy" class="whatsapp" target="_blank" title="Contáctanos por WhatsApp">
+    💬
+  </a>
+
+  <!-- JavaScript -->
+  <script>
+    // Botón de inicio de sesión
+    const loginBtn = document.getElementById("login-btn");
+    if (loginBtn) {
+      loginBtn.addEventListener("click", () => {
+        window.location.href = "{% url 'pantalla_inicio' %}";
+      });
+    }
+
+    // Efecto en íconos sociales
+    document.querySelectorAll(".icons-bar a").forEach(icon => {
+      icon.addEventListener("mouseenter", () => {
+        icon.style.transform = "scale(1.2)";
+      });
+      icon.addEventListener("mouseleave", () => {
+        icon.style.transform = "scale(1)";
+      });
+    });
+  </script>
+
+</body>
+</html>

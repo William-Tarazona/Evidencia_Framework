@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es">
+{% load static %}
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Políticas de Privacidad | LinguaAcademy</title>
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      background-color: #e0f2fe;
+    }
+
+    header {
+      background-color: #93c5fd;
+      padding: 10px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    nav img {
+      height: 50px;
+    }
+
+    .nav-buttons button {
+      background-color: #f3f4f6;
+      border: 1px solid #333;
+      border-radius: 5px;
+      padding: 8px 16px;
+      margin: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .hero {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+      background-image: linear-gradient(to right, #e0f2fe, #cffafe);
+    }
+
+    .hero-text {
+      max-width: 500px;
+      text-align: center;
+      margin: 20px;
+    }
+
+    .hero-text h1 {
+      font-size: 2rem;
+      margin-bottom: 16px;
+    }
+
+    .icons-bar {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 150px;
+      left: 10px;
+      gap: 10px;
+    }
+
+    .icons-bar a {
+      font-size: 24px;
+      text-decoration: none;
+      transition: transform 0.2s ease, color 0.3s ease;
+    }
+
+    .icons-bar a:hover {
+      transform: scale(1.2);
+      color: #2563eb;
+    }
+
+    .section {
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .section h2 {
+      margin-bottom: 24px;
+      font-size: 1.8rem;
+    }
+
+    .features, .functions, .benefits {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 24px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .features div, .functions div, .benefits div {
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    footer {
+      background-color: #e0f2fe;
+      text-align: center;
+      padding: 20px;
+      border-top: 1px solid #ccc;
+      font-size: 0.9rem;
+    }
+
+    footer nav {
+      margin: 10px 0;
+    }
+
+    footer a {
+      margin: 0 12px;
+      text-decoration: none;
+      color: black;
+    }
+
+    .content {
+      padding: 20px;
+      background-color: white;
+      margin: 40px auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      max-width: 900px;
+    }
+
+    .content h3 {
+      font-size: 1.6rem;
+      margin-bottom: 16px;
+    }
+
+    .content ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .content li {
+      font-size: 1rem;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+    }
+
+    .content li::before {
+      content: "\2714\FE0F";
+      margin-right: 10px;
+      font-size: 1.2rem;
+    }
+
+    .whatsapp {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #25d366;
+      color: white;
+      padding: 12px;
+      border-radius: 50%;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      font-size: 1.5rem;
+      text-decoration: none;
+    }
+
+    .privacy-footer {
+      font-size: 0.8rem;
+      color: #555;
+      margin-top: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Barra lateral de redes sociales -->
+<div class="icons-bar">
+  <a href="https://www.instagram.com" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+  <a href="https://www.facebook.com" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+  <a href="https://www.youtube.com" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+  <a href="https://www.linkedin.com" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+  <a href="https://www.twitter.com" target="_blank" title="Twitter"><i class="fab fa-x-twitter"></i></a>
+</div>
+
+  <!-- Encabezado -->
+  <header>
+    <nav>
+      <img src="{% static 'img/LinguaAcademylogo.jpg' %}" alt="LinguaAcademy Logo">
+      <div class="nav-buttons">
+<div class="nav-buttons">
+  <a href="{% url 'index' %}"><button>Inicio</button></a>
+  <a href="{% url 'nosotros' %}"><button>Nosotros</button></a>
+  <a href="{% url 'cursos' %}"><button>Cursos</button></a>
+  <a href="{% url 'metodologia' %}"><button>Metodología</button></a>
+  <a href="{% url 'profesores' %}"><button>Profesores</button></a>
+  <button id="login-btn">Iniciar sesión</button>
+</div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero principal -->
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Políticas de privacidad</h1>
+    </div>
+  </section>
+
+  <!-- Contenido de políticas de privacidad -->
+  <section class="content">
+    <h3>En LinguaAcademy, valoramos y respetamos tu privacidad. Por eso, protegemos tus datos personales de acuerdo con las normas legales vigentes.</h3>
+    <ul>
+      <li>1. ¿Qué datos recolectamos? Recolectamos solo la información necesaria para brindarte nuestros servicios educativos.</li>
+      <li>2. ¿Para qué usamos tus datos?</li>
+      <ul>
+        <li>Gestionar tu inscripción y progreso académico</li>
+        <li>Enviarte recordatorios, mensajes y notificaciones</li>
+        <li>Mejorar nuestros servicios educativos</li>
+        <li>Contactarte con fines administrativos o informativos</li>
+      </ul>
+      <li>3. ¿Compartimos tus datos? No vendemos ni compartimos tus datos personales con terceros. Solo usamos servicios tecnológicos confiables que garantizan la seguridad de la información.</li>
+      <li>4. Seguridad de la información: Implementamos medidas técnicas y organizativas para proteger tus datos frente a accesos no autorizados, pérdidas o filtraciones.</li>
+      <li>5. Tienes derecho a:</li>
+      <ul>
+        <li>Acceder, actualizar o eliminar tus datos</li>
+        <li>Retirar tu consentimiento</li>
+        <li>Solicitar información sobre el tratamiento de tu información</li>
+      </ul>
+      <p class="privacy-footer">Puedes ejercer estos derechos escribiéndonos a: <a href="mailto:soporte@linguaacademy.com">soporte@linguaacademy.com</a></p>
+      <li>6. Actualizaciones: Esta política puede actualizarse. Te informaremos sobre cualquier cambio importante a través de la plataforma o tu correo electrónico.</li>
+    </ul>
+  </section>
+
+  <!-- WhatsApp -->
+  <a href="https://wa.me/573208112507?text=Hola%2C%20necesito%20ayuda%20con%20mi%20curso%20en%20LinguaAcademy" class="whatsapp" target="_blank" title="Contáctanos por WhatsApp">
+    💬
+  </a>
+  
+  
+  <!-- Pie de página -->
+<footer id="footer">
+  <nav>
+    <a href="{% url 'index' %}">📦 Plataforma</a>
+    <a href="{% url 'politicas_privacidad' %}">🔒 Políticas de privacidad</a>
+    <a href="{% url 'terminos' %}">📜 Términos del servicio</a>
+    <a href="#">🌐 Idioma</a>
+    <a href="{% url 'soporte' %}">🛡️ Soporte</a>
+  </nav>
+  <p>© 2025 LinguaAcademy. Todos los derechos reservados.</p>
+</footer>
+
+
+  <!-- Script funcionalidad -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Navegación suave
+      document.querySelectorAll('.nav-buttons button').forEach(button => {
+        button.addEventListener('click', () => {
+          const map = {
+            'Inicio': 'hero',
+            'Nosotros': 'content',
+            'Cursos': 'content',
+            'Metodología': 'content',
+            'Profesores': 'content',
+            'Iniciar sesión': null
+          };
+          const section = map[button.textContent];
+          if (section) {
+            const el = document.querySelector(`.${section}`);
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+          } else {
+            alert('Redirigiendo a la página de inicio de sesión...');
+          }
+        });
+      });
+
+      const loginBtn = document.getElementById("login-btn");
+if (loginBtn) {
+  loginBtn.addEventListener("click", () => {
+    const loginSection = document.getElementById("login");
+    if (loginSection) {
+      // Si estamos en la misma página con la sección de login
+      loginSection.scrollIntoView({ behavior: "smooth" });
+    } else {
+      // Si estamos en otra página, redirigir
+      window.location.href = "{% url 'pantalla_inicio' %}";
+    }
+  });
+}
+
+
+      // WhatsApp dinámico
+      const whatsappLink = document.querySelector(".whatsapp");
+      const phoneNumber = "573208112507"; // Número real
+      const message = encodeURIComponent("¡Hola! Estoy interesado en los cursos de LinguaAcademy.");
+      whatsappLink.href = `https://wa.me/${phoneNumber}?text=${message}`;
+      });
+  </script>
+
+</body>
+</html>

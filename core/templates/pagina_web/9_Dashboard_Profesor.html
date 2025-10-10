@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="es">
+{% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Merged Document</title>
+    <style>
+      body {
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+        background-color: #f3f4f6;
+      }
+
+      header {
+        background-color: #93c5fd;
+        padding: 10px 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+      }
+
+      nav img {
+        height: 50px;
+      }
+
+      .nav-buttons button {
+        background-color: #f3f4f6;
+        border: 1px solid #333;
+        border-radius: 5px;
+        padding: 8px 16px;
+        margin: 5px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      .main-container {
+        display: flex;
+        padding: 20px;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        width: 250px;
+        background-color: #3a3a3a;
+        padding: 20px;
+        color: white;
+        border-radius: 8px;
+        margin-right: 20px;
+      }
+
+      .sidebar a {
+        display: block;
+        color: white;
+        text-decoration: none;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        font-size: 1.1rem;
+      }
+
+      .sidebar a:hover {
+        background-color: #2563eb;
+      }
+
+      /* Main Panel */
+      .panel {
+        flex-grow: 1;
+        background-color: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .panel h1 {
+        margin-top: 0;
+      }
+
+      /* Panel de cursos */
+      .courses-container {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+      }
+
+      .course-card {
+        width: 22%;
+        background-color: #f3f4f6;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .course-card p {
+        font-size: 1.1rem;
+      }
+
+      .course-card button {
+        background-color: #2563eb;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 10px;
+        border: none;
+      }
+
+      /* Calendario */
+      .calendar {
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 0;
+      }
+
+      .calendar h3 {
+        margin-top: 0;
+        margin-bottom: 15px;
+        text-align: center;
+      }
+
+      .calendar-controls {
+        text-align: center;
+        margin-bottom: 15px;
+      }
+
+      .calendar-controls select {
+        padding: 5px 10px;
+        font-size: 1rem;
+      }
+
+      .calendar table {
+        width: 100%;
+        text-align: center;
+        border-collapse: collapse;
+      }
+
+      .calendar th,
+      .calendar td {
+        padding: 10px;
+        border: 1px solid #ddd;
+      }
+
+      .calendar th {
+        background-color: #f9f9f9;
+      }
+
+      .calendar td.active {
+        background-color: #93c5fd;
+        border-radius: 5px;
+      }
+
+      /* Botones de las secciones */
+      .sections {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        margin-top: 40px;
+      }
+
+      .section-card {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .section-card p {
+        font-size: 1.1rem;
+      }
+
+      .whatsapp {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #25d366;
+        color: white;
+        padding: 12px;
+        border-radius: 50%;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        font-size: 1.5rem;
+        text-decoration: none;
+      }
+
+      footer {
+        background-color: #f3f4f6;
+        padding: 20px;
+        text-align: center;
+        border-top: 1px solid #ddd;
+      }
+
+      footer nav {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 10px;
+      }
+
+      footer a {
+        color: #333;
+        text-decoration: none;
+      }
+
+      footer p {
+        font-size: 0.9rem;
+        color: #777;
+      }
+
+      /* Media Queries para Responsividad */
+      @media (max-width: 768px) {
+        .main-container {
+          flex-direction: column;
+        }
+
+        .sidebar {
+          width: 100%;
+          margin-right: 0;
+          margin-bottom: 20px;
+        }
+
+        .courses-container {
+          flex-direction: column;
+        }
+
+        .course-card {
+          width: 100%;
+        }
+
+        .calendar {
+          margin-left: 0;
+          margin-top: 20px;
+        }
+
+        .sections {
+          grid-template-columns: 1fr;
+        }
+
+        nav {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .nav-buttons {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          width: 100%;
+        }
+
+        .nav-buttons button {
+          margin: 5px;
+          width: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Encabezado -->
+    <header>
+      <nav>
+        <img src="{% static 'mg/LinguaAcademylogo.jpg' %}" alt="LinguaAcademy Logo" />
+<div class="nav-buttons">
+  <a href="{% url 'index' %}"><button>Inicio</button></a>
+  <a href="{% url 'nosotros' %}"><button>Nosotros</button></a>
+  <a href="{% url 'cursos' %}"><button>Cursos</button></a>
+  <a href="{% url 'metodologia' %}"><button>Metodología</button></a>
+  <a href="{% url 'profesores' %}"><button>Profesores</button></a>
+  <a href="{% url 'pantalla_inicio' %}"><button>Cerrar sesión</button></a>
+</div>
+      </nav>
+    </header>
+
+    <!-- Contenedor principal -->
+    <div class="main-container">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <h2>Panel</h2>
+        <a href="#">Cursos y niveles</a>
+        <a href="#">Programación de clases</a>
+        <a href="#">Comunicación</a>
+        <a href="#">Evaluaciones</a>
+        <a href="#">Reportes académicos</a>
+        <a href="#">Configuración</a>
+      </div>
+
+      <!-- Panel -->
+      <div class="panel">
+        <h1>Panel Profesor</h1>
+
+        <!-- Cursos a cargo -->
+        <div class="courses-container">
+          <div class="course-card">
+            <p>Curso 1</p>
+            <p>A2 Inglés</p>
+            <button>Acceder</button>
+          </div>
+          <div class="course-card">
+            <p>Curso 2</p>
+            <p>B1 Inglés</p>
+            <button>Acceder</button>
+          </div>
+          <div class="course-card">
+            <p>Curso 3</p>
+            <p>A2 Inglés</p>
+            <button>Acceder</button>
+          </div>
+          <div class="course-card">
+            <p>Curso 4</p>
+            <p>A1 Inglés</p>
+            <button>Acceder</button>
+          </div>
+        </div>
+
+        <!-- Calendario Dinámico -->
+        <div class="calendar">
+          <h3>Clases agendadas</h3>
+          <div class="calendar-controls">
+            <select id="monthSelector"></select>
+            <select id="yearSelector"></select>
+          </div>
+          <table id="calendarTable">
+            <!-- La tabla se llenará dinámicamente -->
+          </table>
+        </div>
+
+        <!-- Secciones -->
+        <div class="sections">
+          <div class="section-card">
+            <p>📝 Comunicación con estudiantes</p>
+          </div>
+          <div class="section-card">
+            <p>📊 Evaluaciones y retroalimentación</p>
+          </div>
+          <div class="section-card">
+            <p>📅 Programación de clases</p>
+          </div>
+          <div class="section-card">
+            <p>📑 Acceso a reportes académicos</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+  <!-- WhatsApp -->
+  <a href="https://wa.me/573208112507?text=Hola%2C%20necesito%20ayuda%20con%20mi%20curso%20en%20LinguaAcademy" class="whatsapp" target="_blank" title="Contáctanos por WhatsApp">
+    💬
+  </a>
+  
+  
+  <!-- Pie de página -->
+<footer id="footer">
+  <nav>
+    <a href="{% url 'index' %}">📦 Plataforma</a>
+    <a href="{% url 'politicas_privacidad' %}">🔒 Políticas de privacidad</a>
+    <a href="{% url 'terminos' %}">📜 Términos del servicio</a>
+    <a href="#">🌐 Idioma</a>
+    <a href="{% url 'soporte' %}">🛡️ Soporte</a>
+  </nav>
+  <p>© 2025 LinguaAcademy. Todos los derechos reservados.</p>
+</footer>
+
+
+    <script>
+      // Listas de meses y días (en español)
+      const meses = [
+        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+      ];
+      const diasSemana = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
+
+      const monthSelector = document.getElementById("monthSelector");
+      const yearSelector = document.getElementById("yearSelector");
+      const calendarTable = document.getElementById("calendarTable");
+
+      // Rellena el selector de meses y años
+      function populateSelectors() {
+        // Meses
+        meses.forEach((mes, index) => {
+          const option = document.createElement("option");
+          option.value = index;
+          option.textContent = mes;
+          monthSelector.appendChild(option);
+        });
+
+        // Años: permite seleccionar desde el año actual - 5 hasta el actual + 5
+        const currentYear = new Date().getFullYear();
+        for (let y = currentYear - 5; y <= currentYear + 5; y++) {
+          const option = document.createElement("option");
+          option.value = y;
+          option.textContent = y;
+          yearSelector.appendChild(option);
+        }
+
+        // Seleccionar por defecto el mes y año actuales
+        monthSelector.value = new Date().getMonth();
+        yearSelector.value = currentYear;
+      }
+
+      // Función para generar el calendario
+      function generateCalendar(year, month) {
+        // Limpia la tabla
+        calendarTable.innerHTML = "";
+
+        // Crea la fila de cabecera con los días de la semana
+        const headerRow = document.createElement("tr");
+        diasSemana.forEach((dia) => {
+          const th = document.createElement("th");
+          th.textContent = dia;
+          headerRow.appendChild(th);
+        });
+        calendarTable.appendChild(headerRow);
+
+        // Primer día del mes
+        const firstDay = new Date(year, month, 1).getDay();
+        // Número de días en el mes
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        let date = 1;
+        // Se generan hasta 6 filas, pues en algunos meses puede ocupar hasta 6 semanas
+        for (let i = 0; i < 6; i++) {
+          const row = document.createElement("tr");
+          for (let j = 0; j < 7; j++) {
+            const cell = document.createElement("td");
+
+            // Rellenar la primera fila con celdas vacías hasta llegar al primer día
+            if (i === 0 && j < firstDay) {
+              cell.textContent = "";
+            } else if (date > daysInMonth) {
+              cell.textContent = "";
+            } else {
+              cell.textContent = date;
+              // Ejemplo: marcar la fecha actual (opcional)
+              const today = new Date();
+              if (
+                date === today.getDate() &&
+                month === today.getMonth() &&
+                year === today.getFullYear()
+              ) {
+                cell.classList.add("active");
+              }
+              date++;
+            }
+            row.appendChild(cell);
+          }
+          calendarTable.appendChild(row);
+          if (date > daysInMonth) break;
+        }
+      }
+
+      // Actualizar el calendario al cambiar los selectores
+      monthSelector.addEventListener("change", () => {
+        generateCalendar(parseInt(yearSelector.value), parseInt(monthSelector.value));
+      });
+
+      yearSelector.addEventListener("change", () => {
+        generateCalendar(parseInt(yearSelector.value), parseInt(monthSelector.value));
+      });
+
+      // Inicialización
+      populateSelectors();
+      generateCalendar(parseInt(yearSelector.value), parseInt(monthSelector.value));
+
+      // Función para cerrar sesión y redirigir
+      function cerrarSesion() {
+        // Aquí podrías limpiar localStorage o cookies si manejas sesiones
+        alert("Sesión cerrada correctamente.");
+        window.location.href = "{% url 'pantalla_inicio' %}";
+      }
+
+
+
+      // WhatsApp dinámico
+      const whatsappLink = document.querySelector(".whatsapp");
+      const phoneNumber = "573208112507"; // Número real
+      const message = encodeURIComponent("¡Hola! Estoy interesado en los cursos de LinguaAcademy.");
+      whatsappLink.href = `https://wa.me/${phoneNumber}?text=${message}`;
+
+    </script>
+  </body>
+</html>

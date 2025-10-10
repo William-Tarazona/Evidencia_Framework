@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago Confirmado</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px 10px 0 0;
+            text-align: center;
+            margin: -30px -30px 20px -30px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .check-icon {
+            font-size: 80px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .info-box {
+            background-color: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .info-box p {
+            margin: 8px 0;
+        }
+        .valor-total {
+            font-size: 32px;
+            color: #28a745;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+            color: #6c757d;
+            font-size: 12px;
+        }
+        .boton {
+            display: inline-block;
+            background-color: #28a745;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 20px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 Academia de Idiomas</h1>
+            <p>Confirmación de Pago</p>
+        </div>
+
+        <div class="check-icon">✅</div>
+
+        <h2 style="color: #28a745; text-align: center;">¡Pago Confirmado!</h2>
+
+        <p>Hola <strong>{{ nombre_estudiante }}</strong>,</p>
+        
+        <p>¡Excelentes noticias! Tu pago ha sido confirmado exitosamente.</p>
+
+        <div class="info-box">
+            <p><strong>📋 Recibo #:</strong> {{ numero_recibo }}</p>
+            <p><strong>📅 Fecha:</strong> {{ fecha_pago|date:"d/m/Y H:i" }}</p>
+            <p><strong>💰 Valor:</strong> ${{ valor|floatformat:0 }} COP</p>
+            <p><strong>✅ Estado:</strong> PAGADO</p>
+        </div>
+
+        <div class="valor-total">
+            ✓ ${{ valor|floatformat:0 }} COP
+        </div>
+
+        <p style="text-align: center; margin: 30px 0;">
+            Ya puedes acceder a todos tus cursos y materiales educativos.
+        </p>
+
+        <div style="text-align: center;">
+            <a href="http://localhost:8000/dashboard-estudiante/" class="boton">Ir a Mi Panel →</a>
+        </div>
+
+        <div style="background-color: #d1ecf1; border-left: 4px solid #0c5460; padding: 15px; margin: 20px 0; border-radius: 5px;">
+            <strong>📚 ¿Qué sigue ahora?</strong>
+            <ul style="margin: 10px 0;">
+                <li>Accede a tu panel de estudiante</li>
+                <li>Revisa tu horario de clases</li>
+                <li>Descarga los materiales del curso</li>
+                <li>Únete a tu primera clase</li>
+            </ul>
+        </div>
+
+        <p>Si tienes alguna pregunta, no dudes en contactarnos.</p>
+
+        <p>¡Gracias por confiar en nosotros!</p>
+
+        <div class="footer">
+            <p><strong>Academia de Idiomas</strong></p>
+            <p>📍 Dirección: Calle 123 #45-67, Medellín, Colombia</p>
+            <p>📞 Teléfono: +57 (4) 123 4567</p>
+            <p>📧 Email: info@academia.com</p>
+            <p>🌐 www.academia.com</p>
+            <br>
+            <p style="font-size: 10px; color: #999;">
+                Este es un correo automático, por favor no responder a este mensaje.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

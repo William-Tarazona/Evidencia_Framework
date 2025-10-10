@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recibo de Pago</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px 10px 0 0;
+            text-align: center;
+            margin: -30px -30px 20px -30px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .recibo-info {
+            background-color: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .recibo-info p {
+            margin: 8px 0;
+        }
+        .valor-total {
+            font-size: 32px;
+            color: #667eea;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .pasarela {
+            background-color: #fff;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            transition: transform 0.2s;
+        }
+        .pasarela:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+        .pasarela h3 {
+            color: #667eea;
+            margin: 0 0 10px 0;
+            font-size: 18px;
+        }
+        .pasarela p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        .pasarela .detalle {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .boton {
+            display: inline-block;
+            background-color: #667eea;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px 0;
+            text-align: center;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+            color: #6c757d;
+            font-size: 12px;
+        }
+        .importante {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 Academia de Idiomas</h1>
+            <p>Recibo de Pago</p>
+        </div>
+
+        <p>Hola <strong>{{ nombre_estudiante }}</strong>,</p>
+        
+        <p>Has recibido un nuevo recibo de pago para tu inscripción en la Academia de Idiomas.</p>
+
+        <div class="recibo-info">
+            <p><strong>📋 Número de Recibo:</strong> #{{ numero_recibo }}</p>
+            <p><strong>📅 Fecha de Emisión:</strong> {{ fecha_emision|date:"d/m/Y H:i" }}</p>
+            <p><strong>📊 Estado:</strong> {{ estado_pago|upper }}</p>
+        </div>
+
+        <div class="valor-total">
+            💰 ${{ valor|floatformat:0 }} COP
+        </div>
+
+        <div class="importante">
+            <strong>⚠️ Importante:</strong> Por favor realiza tu pago a través de cualquiera de las siguientes opciones y envía el comprobante a nuestro correo o WhatsApp.
+        </div>
+
+        <h2 style="color: #667eea; margin-top: 30px;">Opciones de Pago Disponibles:</h2>
+
+        {% for pasarela in pasarelas %}
+        <div class="pasarela">
+            <h3>{{ pasarela.nombre }} - {{ pasarela.tipo }}</h3>
+            
+            {% if pasarela.cuenta %}
+            <div class="detalle">
+                <p><strong>Número de Cuenta:</strong> {{ pasarela.cuenta }}</p>
+                <p><strong>Tipo:</strong> {{ pasarela.tipo_cuenta }}</p>
+                <p><strong>Titular:</strong> {{ pasarela.titular }}</p>
+                {% if pasarela.nit %}
+                <p><strong>NIT:</strong> {{ pasarela.nit }}</p>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            {% if pasarela.numero %}
+            <div class="detalle">
+                <p><strong>Número:</strong> {{ pasarela.numero }}</p>
+                <p><strong>Titular:</strong> {{ pasarela.titular }}</p>
+            </div>
+            {% endif %}
+
+            {% if pasarela.link %}
+            <div class="detalle">
+                <p>{{ pasarela.descripcion }}</p>
+                <a href="{{ pasarela.link }}" class="boton">Pagar Ahora →</a>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        <div class="importante" style="background-color: #d1ecf1; border-color: #0c5460; margin-top: 30px;">
+            <strong>📤 Después de realizar tu pago:</strong>
+            <p style="margin: 10px 0 0 0;">Envía tu comprobante de pago a:<br>
+            📧 <strong>pagos@academia.com</strong><br>
+            📱 <strong>WhatsApp: +57 300 123 4567</strong></p>
+        </div>
+
+        <div class="footer">
+            <p><strong>Academia de Idiomas</strong></p>
+            <p>📍 Dirección: Calle 123 #45-67, Medellín, Colombia</p>
+            <p>📞 Teléfono: +57 (4) 123 4567</p>
+            <p>🌐 www.academia.com</p>
+            <br>
+            <p style="font-size: 10px; color: #999;">
+                Este es un correo automático, por favor no responder a este mensaje.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

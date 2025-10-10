@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Merged Document</title>
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      background-color: #e0f2fe;
+    }
+
+    header {
+      background-color: #93c5fd;
+      padding: 10px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    nav img {
+      height: 50px;
+    }
+
+    .nav-buttons button {
+      background-color: #f3f4f6;
+      border: 1px solid #333;
+      border-radius: 5px;
+      padding: 8px 16px;
+      margin: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .hero {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+      background-image: linear-gradient(to right, #e0f2fe, #cffafe);
+    }
+
+    .hero-text {
+      max-width: 500px;
+      text-align: center;
+      margin: 20px;
+    }
+
+    .hero-text h1 {
+      font-size: 2rem;
+      margin-bottom: 16px;
+    }
+
+    .hero-text button {
+      background-color: #2563eb;
+      color: white;
+      padding: 12px 24px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .hero-image img {
+      max-width: 350px;
+      border-radius: 10px;
+    }
+
+    .icons-bar {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 150px;
+      left: 10px;
+      gap: 10px;
+    }
+
+    .icons-bar a {
+      font-size: 24px;
+      text-decoration: none;
+    }
+
+    .section {
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .section h2 {
+      margin-bottom: 24px;
+      font-size: 1.8rem;
+    }
+
+    .features,
+    .functions,
+    .benefits {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 24px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .features div,
+    .functions div,
+    .benefits div {
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    footer {
+      background-color: #e0f2fe;
+      text-align: center;
+      padding: 20px;
+      border-top: 1px solid #ccc;
+      font-size: 0.9rem;
+    }
+
+    footer nav {
+      margin: 10px 0;
+    }
+
+    footer a {
+      margin: 0 12px;
+      text-decoration: none;
+      color: black;
+    }
+
+    .whatsapp {
+      position: fixed;
+      width: 60px;
+      height: 60px;
+      bottom: 40px;
+      right: 40px;
+      background-color: #25d366;
+      color: #fff;
+      border-radius: 50px;
+      text-align: center;
+      font-size: 30px;
+      box-shadow: 2px 2px 3px #999;
+      z-index: 100;
+      text-decoration: none;
+      line-height: 60px;
+    }
+
+    .whatsapp:hover {
+      background-color: #128c7e;
+    }
+
+    /* Animaciones */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+.btn-inscribirse {
+    display: inline-block;
+    padding: 12px 30px;
+    background: linear-gradient(90deg, #0066ff, #00ccff);
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0px 4px 8px rgba(0, 102, 255, 0.3);
+}
+
+.btn-inscribirse:hover {
+    background: linear-gradient(90deg, #0052cc, #0099cc);
+    transform: translateY(-3px);
+    box-shadow: 0px 6px 12px rgba(0, 102, 255, 0.4);
+}
+
+
+  </style>
+</head>
+<body>
+
+  <!-- Barra lateral de redes sociales -->
+<div class="icons-bar">
+  <a href="https://www.instagram.com" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+  <a href="https://www.facebook.com" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+  <a href="https://www.youtube.com" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+  <a href="https://www.linkedin.com" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+  <a href="https://www.twitter.com" target="_blank" title="Twitter"><i class="fab fa-x-twitter"></i></a>
+</div>
+
+  <!-- Encabezado -->
+  <header>
+    <nav>
+      <img src="{% static 'img/LinguaAcademylogo.jpg' %}" alt="LinguaAcademy Logo">
+<div class="nav-buttons">
+  <a href="{% url 'index' %}"><button>Inicio</button></a>
+  <a href="{% url 'nosotros' %}"><button>Nosotros</button></a>
+  <a href="{% url 'cursos' %}"><button>Cursos</button></a>
+  <a href="{% url 'metodologia' %}"><button>Metodología</button></a>
+  <a href="{% url 'profesores' %}"><button>Profesores</button></a>
+  <button id="login-btn">Iniciar sesión</button>
+</div>
+    </nav>
+  </header>
+
+  <!-- Hero principal -->
+  <section class="hero" id="inicio">
+    <div class="hero-text">
+      <h1>Aprende, mejora y certifica tu idioma con expertos.</h1>
+      <a href="{% url 'registro' %}" class="btn-inscribirse">Inscribirse ahora</a>
+    </div>
+    <div class="hero-image">
+      <img src="{% static 'img/EstudianteLeyendo.jpg' %}" alt="Estudiante leyendo con fondo educativo">
+    </div>
+  </section>
+
+  <!-- ¿Por qué LinguaAcademy? -->
+  <section class="section" id="nosotros">
+    <h2>¿Por qué LinguaAcademy?</h2>
+    <div class="features">
+      <div class="fade-in">📘<br>Cursos basados en el MCERL</div>
+      <div class="fade-in">👨‍🏫<br>Profesores calificados</div>
+      <div class="fade-in">💻<br>Clases virtuales en vivo y contenido grabado</div>
+      <div class="fade-in">📜<br>Certificación al completar</div>
+    </div>
+  </section>
+
+  <!-- ¿Cómo funciona? -->
+  <section class="section" id="cursos">
+    <h2>¿Cómo funciona?</h2>
+    <div class="functions">
+      <div class="fade-in">🔐<br>Autenticación</div>
+      <div class="fade-in">🗂️<br>Gestión de cursos</div>
+      <div class="fade-in">🧠<br>Programación</div>
+      <div class="fade-in">🎓<br>Certificación</div>
+    </div>
+  </section>
+
+  <!-- Beneficios -->
+  <section class="section" id="metodologia" style="background-color: #b9e6fd;">
+    <div class="benefits">
+      <div class="fade-in"><strong>🔒 Seguridad y privacidad</strong><br>Protegemos tus datos con tecnología segura. Tu información está en buenas manos.</div>
+      <div class="fade-in"><strong>💬 Comunicación interna</strong><br>Conéctate con estudiantes, profesores y asesores desde un solo lugar.</div>
+      <div class="fade-in"><strong>📑 Gestión de recibos</strong><br>Consulta, descarga y organiza tus pagos fácilmente.</div>
+      <div class="fade-in"><strong>📚 Gestión de contenidos educativos</strong><br>Accede a tus materiales desde cualquier dispositivo.</div>
+      <div class="fade-in"><strong>📈 Reportes académicos</strong><br>Visualiza tu progreso y calificaciones en tiempo real.</div>
+      <div class="fade-in"><strong>🧑‍🎓 Experiencia estudiantil</strong><br>Aprende en un entorno pensado para ti.</div>
+    </div>
+  </section>
+
+  <!-- WhatsApp -->
+  <a href="https://wa.me/573208112507?text=Hola%2C%20necesito%20ayuda%20con%20mi%20curso%20en%20LinguaAcademy" class="whatsapp" target="_blank" title="Contáctanos por WhatsApp">
+    💬
+  </a>
+  
+  <!-- Pie de página -->
+<footer id="footer">
+  <nav>
+    <a href="{% url 'index' %}">📦 Plataforma</a>
+    <a href="{% url 'politicas_privacidad' %}">🔒 Políticas de privacidad</a>
+    <a href="{% url 'terminos' %}">📜 Términos del servicio</a>
+    <a href="#">🌐 Idioma</a>
+    <a href="{% url 'soporte' %}">🛡️ Soporte</a>
+  </nav>
+  <p>© 2025 LinguaAcademy. Todos los derechos reservados.</p>
+</footer>
+
+
+
+
+  <!-- JavaScript -->
+  <script>
+    // Scroll suave
+    function scrollToSection(id) {
+      document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+    }
+  
+
+    const loginBtn = document.getElementById("login-btn");
+if (loginBtn) {
+  loginBtn.addEventListener("click", () => {
+    const loginSection = document.getElementById("login");
+    if (loginSection) {
+      // Si estamos en la misma página con la sección de login
+      loginSection.scrollIntoView({ behavior: "smooth" });
+    } else {
+      // Si estamos en otra página, redirigir
+      window.location.href = "{% url 'pantalla_inicio' %}";
+    }
+  });
+}
+
+    
+      // Efecto en íconos sociales
+      document.querySelectorAll(".icons-bar a").forEach(icon => {
+        icon.addEventListener("mouseenter", () => {
+          icon.style.transform = "scale(1.2)";
+        });
+        icon.addEventListener("mouseleave", () => {
+          icon.style.transform = "scale(1)";
+        });
+      });
+
+      // WhatsApp dinámico
+      const whatsappLink = document.querySelector(".whatsapp");
+      const phoneNumber = "573208112507"; // Número real
+      const message = encodeURIComponent("¡Hola! Estoy interesado en los cursos de LinguaAcademy.");
+      whatsappLink.href = `https://wa.me/${phoneNumber}?text=${message}`;
+
+    // Fade-in animaciones
+    const fadeElements = document.querySelectorAll('.fade-in');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.2 });
+    fadeElements.forEach(el => observer.observe(el));
+
+    // Botón inscribirse
+    const btn = document.getElementById('inscribirse-btn');
+    btn.addEventListener('click', () => {
+      btn.textContent = 'Redirigiendo...';
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.textContent = 'Inscribirse ahora';
+        btn.disabled = false;
+      }, 2000);
+    });
+    
+    document.getElementById("inscribirse-btn").addEventListener("click", () => {
+      window.location.href = "{% url 'registro' %}";
+    });
+
+  </script>
+  
+
+</body>
+</html>

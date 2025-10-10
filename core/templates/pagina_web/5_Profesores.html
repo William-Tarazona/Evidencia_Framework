@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Merged Document</title>
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      background: linear-gradient(to right, #fef08a, #fde047);
+      color: #1f2937;
+    }
+
+    header {
+      background-color: #93c5fd;
+      padding: 10px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    nav img {
+      height: 50px;
+    }
+
+    .nav-buttons button {
+      background-color: #f3f4f6;
+      border: 1px solid #333;
+      border-radius: 5px;
+      padding: 8px 16px;
+      margin: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .icons-bar {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 150px;
+      left: 10px;
+      gap: 10px;
+      font-size: 24px;
+      z-index: 10;
+    }
+
+    .icons-bar a {
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.3s ease;
+    }
+
+    .section {
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .section h2 {
+      margin-bottom: 24px;
+      font-size: 2rem;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .features div {
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      font-size: 1rem;
+    }
+
+    .features div span {
+      font-size: 24px;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+
+    .features strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1.05rem;
+    }
+
+    footer {
+      background-color: #fef3c7;
+      text-align: center;
+      padding: 20px;
+      border-top: 1px solid #ccc;
+      font-size: 0.9rem;
+    }
+
+    footer nav {
+      margin: 10px 0;
+    }
+
+    footer a {
+      margin: 0 12px;
+      text-decoration: none;
+      color: black;
+    }
+
+
+    .section .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      align-items: start;
+    }
+    
+    .section .card {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 10px;
+      text-align: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      font-size: 0.9rem;
+      max-width: 230px;
+      margin: 0 auto;
+    }
+    
+    .section .card img {
+      max-width: 80%;
+      height: auto;
+      border-radius: 6px;
+      margin-top: 8px;
+    }
+
+    /* Botón flotante WhatsApp */
+    .whatsapp {
+      position: fixed;
+      width: 60px;
+      height: 60px;
+      bottom: 20px;
+      right: 20px;
+      background-color: #25d366;
+      color: #fff;
+      border-radius: 50%;
+      text-align: center;
+      font-size: 30px;
+      box-shadow: 2px 2px 3px #999;
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .whatsapp:hover {
+      background-color: #1ebe5d;
+    }
+
+    .hidden {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.5s ease-in-out;
+    }
+
+    .show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 600px) {
+      .features {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Barra lateral de redes sociales -->
+<div class="icons-bar">
+  <a href="https://www.instagram.com" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+  <a href="https://www.facebook.com" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+  <a href="https://www.youtube.com" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+  <a href="https://www.linkedin.com" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+  <a href="https://www.twitter.com" target="_blank" title="Twitter"><i class="fab fa-x-twitter"></i></a>
+</div>
+
+  <!-- Encabezado -->
+  <header>
+    <nav>
+      <img src="{% static 'img/LinguaAcademylogo.jpg' %}" alt="LinguaAcademy Logo">
+<div class="nav-buttons">
+  <a href="{% url 'index' %}"><button>Inicio</button></a>
+  <a href="{% url 'nosotros' %}"><button>Nosotros</button></a>
+  <a href="{% url 'cursos' %}"><button>Cursos</button></a>
+  <a href="{% url 'metodologia' %}"><button>Metodología</button></a>
+  <a href="{% url 'profesores' %}"><button>Profesores</button></a>
+  <button id="login-btn">Iniciar sesión</button>
+</div>
+
+    </nav>
+  </header>
+
+  
+  <!-- Sección principal -->
+  <section class="section">
+    <h2>Profesores</h2>
+    <p>En LinguaAcademy, nuestros profesores son el corazón del aprendizaje.</p>
+
+    <div class="grid">
+      <div class="card">
+        <span>📜</span>
+        <h3>Profesionales certificados</h3>
+        <p>Cada docente está altamente calificado, con formación en enseñanza de idiomas y certificaciones internacionales.</p>
+        <img src="{% static 'img/profesionalcertificado.jpg' %}" alt="Profesional certificado" />
+      </div>
+      <div class="card">
+        <span>🌎</span>
+        <h3>Nativos o con dominio avanzado</h3>
+        <p>Contamos con hablantes nativos y docentes con experiencia internacional en la enseñanza del español, inglés, italiano y japonés.</p>
+        <img src="{% static 'img/sensei.jpg' %}" alt="Docente nativa" />
+      </div>
+      <div class="card">
+        <span>🧠</span>
+        <h3>Enfoque pedagógico moderno</h3>
+        <p>Aplican metodologías activas, dinámicas y centradas en el estudiante, adaptando las clases según tu estilo de aprendizaje.</p>
+        <img src="{% static 'img/enfoquemoderno.jpg' %}" alt="Clases modernas" />
+      </div>
+      <div class="card">
+        <span>💬</span>
+        <h3>Cercanos y accesibles</h3>
+        <p>Te acompañan en todo momento con una comunicación abierta, empática y motivadora.</p>
+        <img src="{% static 'img/acompanamiento.jpg' %}" alt="Acompañamiento docente" />
+      </div>
+    </div>
+  </section>
+
+  
+  <!-- Pie de página -->
+<footer id="footer">
+  <nav>
+    <a href="{% url 'index' %}">📦 Plataforma</a>
+    <a href="{% url 'politicas_privacidad' %}">🔒 Políticas de privacidad</a>
+    <a href="{% url 'terminos' %}">📜 Términos del servicio</a>
+    <a href="#">🌐 Idioma</a>
+    <a href="{% url 'soporte' %}">🛡️ Soporte</a>
+  </nav>
+  <p>© 2025 LinguaAcademy. Todos los derechos reservados.</p>
+</footer>
+
+
+
+
+  <!-- WhatsApp -->
+  <a href="https://wa.me/573208112507?text=Hola%2C%20necesito%20ayuda%20con%20mi%20curso%20en%20LinguaAcademy" class="whatsapp" target="_blank" title="Contáctanos por WhatsApp">
+    💬
+  </a>
+
+  <!-- JavaScript de mejoras -->
+  <script>
+    // Scroll suave al hacer clic en botones de navegación
+    document.addEventListener('DOMContentLoaded', () => {
+      const navButtons = document.querySelectorAll('.nav-buttons button');
+
+      // Efecto hover en íconos de redes
+      document.querySelectorAll('.icons-bar a').forEach(icon => {
+        icon.addEventListener('mouseenter', () => {
+          icon.style.transform = 'scale(1.2)';
+        });
+        icon.addEventListener('mouseleave', () => {
+          icon.style.transform = 'scale(1)';
+        });
+      });
+
+const loginBtn = document.getElementById("login-btn");
+if (loginBtn) {
+  loginBtn.addEventListener("click", () => {
+    const loginSection = document.getElementById("login");
+    if (loginSection) {
+      // Si estamos en la misma página con la sección de login
+      loginSection.scrollIntoView({ behavior: "smooth" });
+    } else {
+      // Si estamos en otra página, redirigir
+      window.location.href = "{% url 'pantalla_inicio' %}";
+    }
+  });
+}
+
+
+
+      // Animación con IntersectionObserver
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.features div').forEach(div => {
+        div.classList.add('hidden');
+        observer.observe(div);
+      });
+
+      // WhatsApp dinámico
+      const whatsappLink = document.querySelector(".whatsapp");
+      const phoneNumber = "573208112507"; // Número real
+      const message = encodeURIComponent("¡Hola! Estoy interesado en los cursos de LinguaAcademy.");
+      whatsappLink.href = `https://wa.me/${phoneNumber}?text=${message}`;
+    });
+  </script>
+</body>
+</html>

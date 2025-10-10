@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="es">
+{% load static %}
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Crear Ticket - LinguaAcademy</title>
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      background-color: #e0f2fe;
+    }
+
+    header {
+      background-color: #93c5fd;
+      padding: 10px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    nav img {
+      height: 50px;
+    }
+
+    .nav-buttons button {
+      background-color: #f3f4f6;
+      border: 1px solid #333;
+      border-radius: 5px;
+      padding: 8px 16px;
+      margin: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      color: #2563eb;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .form-input, .form-textarea {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 15px;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+      transition: border-color 0.3s;
+    }
+
+    .form-input:focus, .form-textarea:focus {
+      outline: none;
+      border-color: #2563eb;
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .btn-submit {
+      background-color: #2563eb;
+      color: white;
+      padding: 14px 30px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+      transition: background-color 0.3s;
+    }
+
+    .btn-submit:hover {
+      background-color: #1d4ed8;
+    }
+
+    .btn-submit:disabled {
+      background-color: #9ca3af;
+      cursor: not-allowed;
+    }
+
+    .btn-back {
+      background-color: #6b7280;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 20px;
+      transition: background-color 0.3s;
+    }
+
+    .btn-back:hover {
+      background-color: #4b5563;
+    }
+
+    .messages {
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      font-weight: 500;
+      animation: slideDown 0.5s ease-out;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .messages.success {
+      background-color: #d1fae5;
+      color: #065f46;
+      border: 2px solid #10b981;
+      font-size: 16px;
+      text-align: center;
+    }
+
+    .messages.error {
+      background-color: #fee2e2;
+      color: #991b1b;
+      border: 2px solid #ef4444;
+    }
+
+    .info-box {
+      background-color: #dbeafe;
+      border-left: 4px solid #2563eb;
+      padding: 15px;
+      margin-bottom: 25px;
+      border-radius: 5px;
+    }
+
+    .info-box p {
+      margin: 5px 0;
+      color: #1e40af;
+    }
+    
+    footer {
+      background-color: #e0f2fe;
+      text-align: center;
+      padding: 20px;
+      border-top: 1px solid #ccc;
+      font-size: 0.9rem;
+    }
+    
+    footer nav {
+      margin: 10px 0;
+    }
+    
+    footer a {
+      margin: 0 12px;
+      text-decoration: none;
+      color: black;
+    }
+    
+    .icons-bar {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 150px;
+      left: 10px;
+      gap: 10px;
+    }
+    
+    .icons-bar a {
+      font-size: 24px;
+      text-decoration: none;
+    }
+    
+    .whatsapp {
+      position: fixed;
+      width: 60px;
+      height: 60px;
+      bottom: 40px;
+      right: 40px;
+      background-color: #25d366;
+      color: #fff;
+      border-radius: 50px;
+      text-align: center;
+      font-size: 30px;
+      box-shadow: 2px 2px 3px #999;
+      z-index: 100;
+      text-decoration: none;
+      line-height: 60px;
+    }
+
+    .whatsapp:hover {
+      background-color: #128c7e;
+    }
+
+
+  </style>
+</head>
+<body>
+
+  <!-- Barra lateral de redes sociales -->
+<div class="icons-bar">
+  <a href="https://www.instagram.com" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+  <a href="https://www.facebook.com" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+  <a href="https://www.youtube.com" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+  <a href="https://www.linkedin.com" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+  <a href="https://www.twitter.com" target="_blank" title="Twitter"><i class="fab fa-x-twitter"></i></a>
+</div>
+
+  <!-- Encabezado -->
+  <header>
+    <nav>
+      <img src="{% static 'img/LinguaAcademylogo.jpg' %}" alt="LinguaAcademy Logo">
+<div class="nav-buttons">
+  <a href="{% url 'index' %}"><button>Inicio</button></a>
+  <a href="{% url 'nosotros' %}"><button>Nosotros</button></a>
+  <a href="{% url 'cursos' %}"><button>Cursos</button></a>
+  <a href="{% url 'metodologia' %}"><button>Metodología</button></a>
+  <a href="{% url 'profesores' %}"><button>Profesores</button></a>
+  <button id="login-btn">Iniciar sesión</button>
+</div>
+    </nav>
+  </header>
+
+  <div class="container">
+    <a href="{% url 'soporte' %}" class="btn-back">Volver a Soporte</a>
+    
+    <h1>Crear Nuevo Ticket de Soporte</h1>
+    <p class="subtitle">Describe tu problema y te responderemos lo antes posible</p>
+
+    <div class="info-box">
+      <p><strong>Consejos para un mejor soporte:</strong></p>
+      <p>• Sé específico sobre el problema que experimentas.</p>
+      <p>• Indica datos que estén actualizados para brindar una respuesta adecuada.</p>
+      <p>• Si eres estudiante menciona a qué idioma y nivel perteneces.</p>
+    </div>
+    
+    <!-- Mensaje de éxito dinámico -->
+    <div id="successMessage" class="messages success" style="display: none;">
+      Ticket enviado satisfactoriamente. Recibirás la respuesta por correo electrónico.
+    </div>
+
+    <!-- Mensajes de error de Django -->
+    {% if messages %}
+      {% for message in messages %}
+        {% if message.tags == 'error' %}
+        <div class="messages error">
+          {{ message }}
+        </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+    
+    <form method="POST" id="ticketForm">
+      {% csrf_token %}
+      
+      {% if not usuario %}
+      <div class="form-group">
+        <label for="{{ form.nombre_usuario.id_for_label }}">Nombre completo *</label>
+        {{ form.nombre_usuario }}
+      </div>
+      
+      <div class="form-group">
+        <label for="{{ form.email_usuario.id_for_label }}">Correo electrónico *</label>
+        {{ form.email_usuario }}
+      </div>
+      {% endif %}
+      
+      <div class="form-group">
+        <label for="{{ form.Asunto.id_for_label }}">Asunto *</label>
+        {{ form.Asunto }}
+      </div>
+      
+      <div class="form-group">
+        <label for="{{ form.Descripcion.id_for_label }}">Descripción del problema *</label>
+        {{ form.Descripcion }}
+      </div>
+      
+      <button type="submit" class="btn-submit" id="submitBtn">Enviar Ticket</button>
+    </form>
+  </div>
+
+  <!-- WhatsApp -->
+  <a href="https://wa.me/573208112507?text=Hola%2C%20necesito%20ayuda%20con%20mi%20curso%20en%20LinguaAcademy" class="whatsapp" target="_blank" title="Contáctanos por WhatsApp">
+    💬
+  </a>
+  
+  <!-- Pie de página -->
+<footer id="footer">
+  <nav>
+    <a href="{% url 'index' %}">📦 Plataforma</a>
+    <a href="{% url 'politicas_privacidad' %}">🔒 Políticas de privacidad</a>
+    <a href="{% url 'terminos' %}">📜 Términos del servicio</a>
+    <a href="#">🌐 Idioma</a>
+    <a href="{% url 'soporte' %}">🛡️ Soporte</a>
+  </nav>
+  <p>© 2025 LinguaAcademy. Todos los derechos reservados.</p>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('ticketForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const successMsg = document.getElementById('successMessage');
+
+    if (!form) return; // Evita errores si no existe el formulario
+
+    // Convertimos usuario a boolean de forma segura
+    const esUsuarioAutenticado = "{{ usuario|yesno:'true,false' }}" === "true";
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault(); // Evita recargar la página
+
+        // Capturamos los valores
+        const asuntoEl = document.querySelector('[name="Asunto"]');
+        const descripcionEl = document.querySelector('[name="Descripcion"]');
+
+        if (!asuntoEl || !descripcionEl) return;
+
+        const asunto = asuntoEl.value.trim();
+        const descripcion = descripcionEl.value.trim();
+
+        // Validación para usuarios no autenticados
+        let nombre = "", email = "";
+        if (!esUsuarioAutenticado) {
+            const nombreEl = document.querySelector('[name="nombre_usuario"]');
+            const emailEl = document.querySelector('[name="email_usuario"]');
+
+            nombre = nombreEl ? nombreEl.value.trim() : '';
+            email = emailEl ? emailEl.value.trim() : '';
+
+            if (!nombre || !email) {
+                alert('Por favor completa todos los campos');
+                return;
+            }
+        }
+
+        // Validación de asunto y descripción
+        if (!asunto || !descripcion) {
+            alert('Por favor completa el asunto y la descripción');
+            return;
+        }
+
+        // Mostrar mensaje de éxito
+        if (successMsg) {
+            successMsg.style.display = 'block';
+            successMsg.scrollIntoView({ behavior: "smooth" });
+        }
+
+        // Deshabilitar botón
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviando...';
+        }
+
+        // Enviar formulario después de 2 segundos
+        setTimeout(() => {
+            form.submit();
+        }, 2000);
+    });
+});
+</script>
+
+</body>
+</html>
