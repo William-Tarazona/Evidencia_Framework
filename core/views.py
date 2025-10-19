@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.utils import timezone
-from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.models import User
+from django.contrib.auth.hashers import check_password
 from .models import (
     Usuario, Curso, Inscripcion, Clase, ContenidoEducativo,
     Evaluacion, ResultadoEvaluacion, Mensaje, ReciboPago, TicketSoporte
@@ -95,13 +96,25 @@ def registro(request):
             messages.error(request, 'El correo ya está registrado')
             return redirect('registro')
         
+        if User.objects.filter(email=correo).exists():
+            messages.error(request, 'El correo ya está registrado')
+            return redirect('registro')
+        
         # Crear usuario
         try:
+            # 1. Crear el User de Django
+            user = User.objects.create_user(
+                username=correo,  # Usar el email como username
+                email=correo,
+                password=contrasena
+            )
+            
+            # 2. Crear el perfil Usuario vinculado al User
             usuario = Usuario.objects.create(
+                user=user,  # ← Vincular con el User de Django
                 Nombres=nombres,
                 Apellidos=apellidos,
                 Correo=correo,
-                Contrasena=make_password(contrasena),
                 Rol='estudiante',
                 Fecha_registro=timezone.now(),
                 Estado='activo'
@@ -111,9 +124,10 @@ def registro(request):
             request.session['usuario_id'] = usuario.idUsuario
             request.session['usuario_nombre'] = f"{usuario.Nombres} {usuario.Apellidos}"
             request.session['usuario_rol'] = usuario.Rol
+            request.session.modified = True
             
             messages.success(request, f'¡Bienvenido {usuario.Nombres}! Explora nuestros cursos y elige el que más te interese.')
-            return redirect('cursos')  # Redirige a la página de cursos
+            return redirect('dashboard_estudiante')
             
         except Exception as e:
             messages.error(request, f'Error al registrar usuario: {str(e)}')
@@ -137,31 +151,46 @@ def login(request):
         
         try:
             usuario = Usuario.objects.get(Correo=correo)
+            print(f"✅ Usuario encontrado: {usuario.Nombres}")
+            print(f"✅ Rol: {usuario.Rol}")
+            print(f"✅ User vinculado: {usuario.user}")
             
             if usuario.Estado == 'inactivo':
                 messages.error(request, 'Tu cuenta está inactiva. Contacta al administrador')
                 return redirect('login')
             
-            if check_password(contrasena, usuario.Contrasena):
+            # Verificar contraseña usando el User de Django
+            if usuario.user and usuario.user.check_password(contrasena):
+                print(f"✅ Contraseña correcta")
+                
                 # Guardar datos en sesión
                 request.session['usuario_id'] = usuario.idUsuario
                 request.session['usuario_nombre'] = f"{usuario.Nombres} {usuario.Apellidos}"
                 request.session['usuario_rol'] = usuario.Rol
+                request.session.modified = True
                 
-                messages.success(request, f'¡Bienvenido {usuario.Nombres}!')
+                print(f"✅ Sesión guardada: usuario_id={request.session.get('usuario_id')}")
+                print(f"✅ Sesión guardada: usuario_rol={request.session.get('usuario_rol')}")
+                
+                messages.success(request, f'¡Bienvenido {usuario.Nombres}! ¡Inicio de sesión exitosos!')
                 
                 # Redirigir según el rol
                 if usuario.Rol == 'admin':
+                    print("🔴 Redirigiendo a admin")
                     return redirect('dashboard_administrativo')
                 elif usuario.Rol == 'profesor':
+                    print("🟡 Redirigiendo a profesor")
                     return redirect('dashboard_profesor')
                 else:
+                    print("🟢 Redirigiendo a estudiante")
                     return redirect('dashboard_estudiante')
             else:
+                print(f"❌ Contraseña incorrecta o usuario sin vinculación")
                 messages.error(request, 'Contraseña incorrecta')
                 return redirect('login')
                 
         except Usuario.DoesNotExist:
+            print(f"❌ Usuario no encontrado con correo: {correo}")
             messages.error(request, 'El correo no está registrado')
             return redirect('login')
     
@@ -180,7 +209,11 @@ def logout(request):
 # ===================================
 def dashboard_estudiante(request):
     """Panel del estudiante con datos de la BD"""
+    print(f"Dashboard estudiante - usuario_id en sesión: {request.session.get('usuario_id')}")
+    print(f"Dashboard estudiante - usuario_rol en sesión: {request.session.get('usuario_rol')}")
+    
     if not verificar_sesion(request, 'estudiante'):
+        print("❌ Sesión inválida, redirigiendo a login")
         messages.error(request, 'Debes iniciar sesión como estudiante')
         return redirect('login')
     
@@ -237,12 +270,29 @@ def dashboard_profesor(request):
         Subido_por=usuario
     ).select_related('idCurso')
     
-    cursos_profesor = set([contenido.idCurso for contenido in contenidos])
+    # Obtener cursos únicos
+    cursos_profesor = list(set([contenido.idCurso for contenido in contenidos]))
+    
+    # Obtener estudiantes inscritos en los cursos del profesor
+    inscripciones = Inscripcion.objects.filter(
+        idCurso__in=cursos_profesor,
+        Estado='activa'
+    ).select_related('idUsuario', 'idCurso')
+    
+    inscripciones_activas = inscripciones.filter(Estado='activa')
+    
+    # Obtener evaluaciones creadas por los cursos del profesor
+    evaluaciones = Evaluacion.objects.filter(
+        idCurso__in=cursos_profesor
+    ).select_related('idCurso')
     
     context = {
         'usuario': usuario,
         'cursos': cursos_profesor,
-        'contenidos': contenidos
+        'contenidos': contenidos,
+        'inscripciones': inscripciones,
+        'inscripciones_activas': inscripciones_activas,
+        'evaluaciones': evaluaciones,
     }
     return render(request, 'pagina_web/9_Dashboard_Profesor.html', context)
 
@@ -261,11 +311,25 @@ def dashboard_administrativo(request):
     total_cursos = Curso.objects.count()
     total_inscripciones = Inscripcion.objects.filter(Estado='activa').count()
     
+    # Pagos pendientes
+    pagos_pendientes = ReciboPago.objects.filter(Estado_pago='pendiente').count()
+    
+    # Obtener datos para mostrar en tablas
+    usuarios = Usuario.objects.all().order_by('-Fecha_registro')
+    cursos = Curso.objects.all()
+    pagos = ReciboPago.objects.filter(Estado_pago='pendiente').select_related('idUsuario')[:10]
+    tickets = TicketSoporte.objects.filter(Estado='abierto').order_by('-Fecha_creacion')[:10]
+    
     context = {
         'usuario': usuario,
         'total_usuarios': total_usuarios,
         'total_cursos': total_cursos,
-        'total_inscripciones': total_inscripciones
+        'total_inscripciones': total_inscripciones,
+        'pagos_pendientes': pagos_pendientes,
+        'usuarios': usuarios,
+        'cursos': cursos,
+        'pagos': pagos,
+        'tickets': tickets,
     }
     return render(request, 'pagina_web/10_Dashboard_Administrativo.html', context)
 
@@ -308,11 +372,14 @@ def detalle_curso(request, id_curso):
 def verificar_sesion(request, rol=None):
     """Verifica si hay una sesión activa y opcionalmente el rol"""
     if not request.session.get('usuario_id'):
+        print(f"❌ No hay usuario_id en sesión")
         return False
     
     if rol and request.session.get('usuario_rol') != rol:
+        print(f"❌ Rol incorrecto. Esperado: {rol}, Actual: {request.session.get('usuario_rol')}")
         return False
     
+    print(f"✅ Sesión válida")
     return True
 
 
@@ -482,3 +549,179 @@ def inscribirse_curso(request, curso_id):
     
     # Si no es POST, redirigir a la lista de cursos
     return redirect('cursos')
+
+# ===================================
+# SISTEMA DE MENSAJERÍA INTERNA
+# ===================================
+
+from django.db.models import Q, Max, Count
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from .models import Chat
+
+def chat_list(request):
+    """Lista de usuarios disponibles para chatear (excluye admins)"""
+    if not verificar_sesion(request):
+        messages.error(request, 'Debes iniciar sesión para acceder al chat')
+        return redirect('login')
+    
+    usuario_id = request.session.get('usuario_id')
+    usuario_actual = get_object_or_404(Usuario, idUsuario=usuario_id)
+    
+    # Obtener usuarios (estudiantes y profesores, sin admins)
+    usuarios_disponibles = Usuario.objects.filter(
+        Estado='activo'
+    ).exclude(
+        idUsuario=usuario_id
+    ).exclude(
+        Rol='admin'
+    ).order_by('Nombres', 'Apellidos')
+    
+    # Obtener conversaciones con mensajes no leídos
+    conversaciones = []
+    for user in usuarios_disponibles:
+        # Último mensaje entre ambos usuarios
+        ultimo_mensaje = Chat.objects.filter(
+            Q(sender=usuario_actual, receiver=user) | 
+            Q(sender=user, receiver=usuario_actual)
+        ).order_by('-timestamp').first()
+        
+        # Contar mensajes no leídos de este usuario
+        unread_count = Chat.objects.filter(
+            sender=user,
+            receiver=usuario_actual,
+            is_read=False
+        ).count()
+        
+        conversaciones.append({
+            'usuario': user,
+            'ultimo_mensaje': ultimo_mensaje,
+            'unread_count': unread_count
+        })
+    
+    # Ordenar por último mensaje más reciente
+    conversaciones.sort(
+        key=lambda x: x['ultimo_mensaje'].timestamp if x['ultimo_mensaje'] else timezone.now(),
+        reverse=True
+    )
+    
+    context = {
+        'usuario': usuario_actual,
+        'conversaciones': conversaciones
+    }
+    return render(request, 'chat/chat_list.html', context)
+
+
+def chat_room(request, user_id):
+    """Sala de chat con un usuario específico"""
+    if not verificar_sesion(request):
+        messages.error(request, 'Debes iniciar sesión para acceder al chat')
+        return redirect('login')
+    
+    usuario_id = request.session.get('usuario_id')
+    usuario_actual = get_object_or_404(Usuario, idUsuario=usuario_id)
+    otro_usuario = get_object_or_404(Usuario, idUsuario=user_id)
+    
+    # Verificar que el otro usuario no sea admin
+    if otro_usuario.Rol == 'admin':
+        messages.error(request, 'No puedes chatear con administradores')
+        return redirect('chat_list')
+    
+    # Marcar mensajes como leídos
+    Chat.objects.filter(
+        sender=otro_usuario,
+        receiver=usuario_actual,
+        is_read=False
+    ).update(is_read=True)
+    
+    # Obtener historial de mensajes
+    mensajes = Chat.objects.filter(
+        Q(sender=usuario_actual, receiver=otro_usuario) | 
+        Q(sender=otro_usuario, receiver=usuario_actual)
+    ).order_by('timestamp')
+    
+    context = {
+        'usuario': usuario_actual,
+        'otro_usuario': otro_usuario,
+        'mensajes': mensajes
+    }
+    return render(request, 'chat/chat_room.html', context)
+
+
+def send_message(request):
+    """Enviar mensaje vía AJAX"""
+    if request.method == 'POST' and verificar_sesion(request):
+        usuario_id = request.session.get('usuario_id')
+        usuario_actual = get_object_or_404(Usuario, idUsuario=usuario_id)
+        
+        receiver_id = request.POST.get('receiver_id')
+        message_text = request.POST.get('message', '').strip()
+        
+        if not message_text:
+            return JsonResponse({'success': False, 'error': 'Mensaje vacío'})
+        
+        receiver = get_object_or_404(Usuario, idUsuario=receiver_id)
+        
+        # Verificar que no sea admin
+        if receiver.Rol == 'admin':
+            return JsonResponse({'success': False, 'error': 'No puedes enviar mensajes a administradores'})
+        
+        # Crear mensaje
+        mensaje = Chat.objects.create(
+            sender=usuario_actual,
+            receiver=receiver,
+            message=message_text
+        )
+        
+        return JsonResponse({
+            'success': True,
+            'message': {
+                'id': mensaje.id,
+                'text': mensaje.message,
+                'timestamp': mensaje.timestamp.strftime('%H:%M'),
+                'sender_name': f"{usuario_actual.Nombres} {usuario_actual.Apellidos}"
+            }
+        })
+    
+    return JsonResponse({'success': False, 'error': 'Método no permitido'})
+
+
+def get_messages(request, user_id):
+    """Obtener mensajes nuevos vía AJAX"""
+    if verificar_sesion(request):
+        usuario_id = request.session.get('usuario_id')
+        usuario_actual = get_object_or_404(Usuario, idUsuario=usuario_id)
+        otro_usuario = get_object_or_404(Usuario, idUsuario=user_id)
+        
+        last_message_id = request.GET.get('last_id', 0)
+        
+        # Obtener mensajes nuevos
+        nuevos_mensajes = Chat.objects.filter(
+            Q(sender=usuario_actual, receiver=otro_usuario) | 
+            Q(sender=otro_usuario, receiver=usuario_actual),
+            id__gt=last_message_id
+        ).order_by('timestamp')
+        
+        # Marcar como leídos los mensajes recibidos
+        Chat.objects.filter(
+            sender=otro_usuario,
+            receiver=usuario_actual,
+            is_read=False
+        ).update(is_read=True)
+        
+        mensajes_data = []
+        for msg in nuevos_mensajes:
+            mensajes_data.append({
+                'id': msg.id,
+                'text': msg.message,
+                'timestamp': msg.timestamp.strftime('%H:%M'),
+                'is_mine': msg.sender.idUsuario == usuario_actual.idUsuario,
+                'sender_name': f"{msg.sender.Nombres} {msg.sender.Apellidos}"
+            })
+        
+        return JsonResponse({
+            'success': True,
+            'messages': mensajes_data
+        })
+    
+    return JsonResponse({'success': False, 'error': 'No autorizado'})

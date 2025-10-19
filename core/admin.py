@@ -16,6 +16,14 @@ class UsuarioInlineForm(forms.ModelForm):
     """
     Formulario personalizado que hace obligatorios los campos del perfil
     """
+    # Campo de contraseña para el User de Django
+    password = forms.CharField(
+        label='Contraseña',
+        widget=forms.PasswordInput(attrs={'class': 'vPasswordInput'}),
+        required=False,  # No obligatorio en edición
+        help_text='Deja en blanco para no cambiar la contraseña (solo en edición)'
+    )
+    
     class Meta:
         model = Usuario
         fields = ('Nombres', 'Apellidos', 'Correo', 'Rol', 'Estado')
@@ -28,6 +36,12 @@ class UsuarioInlineForm(forms.ModelForm):
         self.fields['Correo'].required = True
         self.fields['Rol'].required = True
         self.fields['Estado'].required = True
+        
+        # Si es edición (obj existe), la contraseña no es obligatoria
+        if self.instance.pk:
+            self.fields['password'].required = False
+        else:
+            self.fields['password'].required = True
         
         # Agregar ayuda visual
         self.fields['Rol'].help_text = '⚠️ Campo obligatorio: Selecciona el rol del usuario'
@@ -48,7 +62,7 @@ class UsuarioInline(admin.StackedInline):
     can_delete = False
     verbose_name_plural = '📋 Información del Perfil (OBLIGATORIO)'
     fk_name = 'user'
-    fields = ('Nombres', 'Apellidos', 'Correo', 'Rol', 'Estado')
+    fields = ('Nombres', 'Apellidos', 'Correo', 'Rol', 'Estado', 'password')
     
     # Hacer obligatorio completar el perfil
     min_num = 1  # Mínimo 1 perfil
@@ -111,8 +125,16 @@ class CustomUserAdmin(BaseUserAdmin):
                 )
                 return
         
-        # Guardar las instancias
+        # Guardar las instancias y procesar contraseña
         for instance in instances:
+            # Obtener la contraseña del formulario
+            password = formset.forms[0].cleaned_data.get('password')
+            
+            # Si hay contraseña, asignarla al User
+            if password and instance.user:
+                instance.user.set_password(password)
+                instance.user.save()
+            
             instance.save()
         
         # Eliminar instancias marcadas para borrar
@@ -306,7 +328,7 @@ Academia de Idiomas
                 errores += 1
                 self.message_user(
                     request,
-                    f'❌ Error al enviar recibo #{recibo.idRecibo}: {str(e)}',
+                    f'Error al enviar recibo #{recibo.idRecibo}: {str(e)}',
                     level=admin_messages.ERROR
                 )
         
@@ -314,29 +336,29 @@ Academia de Idiomas
         if enviados > 0:
             self.message_user(
                 request,
-                f'✅ Se enviaron {enviados} recibo(s) correctamente.',
+                f'Se enviaron {enviados} recibo(s) correctamente.',
                 level=admin_messages.SUCCESS
             )
         
         if errores > 0:
             self.message_user(
                 request,
-                f'⚠️ Hubo {errores} error(es) al enviar recibos.',
+                f'Hubo {errores} error(es) al enviar recibos.',
                 level=admin_messages.WARNING
             )
     
-    enviar_recibo_email.short_description = "📧 Enviar recibo por email"
+    enviar_recibo_email.short_description = "Enviar recibo por email"
     
     def marcar_como_pagado(self, request, queryset):
         """Marca los recibos seleccionados como pagados"""
         actualizados = queryset.update(Estado_pago='pagado')
         self.message_user(
             request,
-            f'✅ Se marcaron {actualizados} recibo(s) como pagados.',
+            f'Se marcaron {actualizados} recibo(s) como pagados.',
             level=admin_messages.SUCCESS
         )
     
-    marcar_como_pagado.short_description = "✅ Marcar como pagado"
+    marcar_como_pagado.short_description = "Marcar como pagado"
 
 
 @admin.register(ContenidoEducativo)
@@ -395,9 +417,9 @@ class ResultadoEvaluacionAdmin(admin.ModelAdmin):
     def obtener_estado_nota(self, obj):
         nota = float(obj.Nota)
         if nota >= 70:
-            return f"✅ Aprobado ({nota})"
+            return f"Aprobado ({nota})"
         else:
-            return f"❌ Reprobado ({nota})"
+            return f"Reprobado ({nota})"
     obtener_estado_nota.short_description = 'Estado'
 
 
@@ -517,6 +539,27 @@ class IdiomaInterfazAdmin(admin.ModelAdmin):
 
 # ===== PERSONALIZACIÓN DEL SITIO ADMIN =====
 
-admin.site.site_header = "🎓 Academia - Panel de Administración"
+admin.site.site_header = "Academia - Panel de Administración"
 admin.site.site_title = "Academia Admin"
 admin.site.index_title = "Bienvenido al Sistema de Gestión Académica"
+
+# -------------------------------------------
+
+from .models import ProfesorCurso
+
+@admin.register(ProfesorCurso)
+class ProfesorCursoAdmin(admin.ModelAdmin):
+    list_display = ('idProfesor', 'idCurso', 'Fecha_asignacion')
+    list_filter = ('Fecha_asignacion', 'idCurso')
+    search_fields = ('idProfesor__Nombres', 'idCurso__Nombre')
+    
+    fieldsets = (
+        ('Asignación', {
+            'fields': ('idProfesor', 'idCurso')
+        }),
+        ('Información', {
+            'fields': ('Fecha_asignacion',)
+        }),
+    )
+    
+    readonly_fields = ('Fecha_asignacion',)

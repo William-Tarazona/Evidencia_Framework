@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 {% load static %}
 <head>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Merged Document</title>
+  <title>Iniciar Sesión - LinguaAcademy</title>
   <style>
     body {
       font-family: 'Roboto', sans-serif;
@@ -32,6 +32,17 @@
       height: 50px;
     }
 
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .nav-buttons a {
+      text-decoration: none;
+    }
+
     .nav-buttons button {
       background-color: #f3f4f6;
       border: 1px solid #333;
@@ -40,6 +51,12 @@
       margin: 5px;
       cursor: pointer;
       font-weight: bold;
+      transition: all 0.3s;
+    }
+
+    .nav-buttons button:hover {
+      background-color: #2563eb;
+      color: white;
     }
 
     .icons-bar {
@@ -59,6 +76,10 @@
       transition: transform 0.3s ease;
     }
 
+    .icons-bar a:hover {
+      transform: scale(1.2);
+    }
+
     .login-section {
       display: flex;
       flex-direction: column;
@@ -70,42 +91,114 @@
     .login-section h2 {
       font-size: 2rem;
       margin-bottom: 30px;
+      color: #333;
     }
 
-    form {
+    .form-container {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 15px;
-      width: 300px;
+      width: 100%;
+      max-width: 350px;
       background-color: rgba(255, 255, 255, 0.95);
       padding: 30px;
       border-radius: 10px;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
 
+    form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
     select,
     input {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       border: 1px solid #ccc;
       border-radius: 5px;
       box-sizing: border-box;
+      font-size: 1rem;
     }
 
-    button {
-      padding: 8px 16px;
+    select:focus,
+    input:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 5px rgba(37, 99, 235, 0.3);
+    }
+
+    button[type="submit"] {
+      padding: 12px 16px;
       font-weight: bold;
-      border: 1px solid #000;
-      background-color: #f9fafb;
+      border: none;
+      background-color: #2563eb;
+      color: white;
       cursor: pointer;
       border-radius: 5px;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #1d4ed8;
+    }
+
+    .messages {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .message {
+      padding: 12px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    .error {
+      background-color: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+
+    .success {
+      background-color: #d1fae5;
+      color: #065f46;
+      border: 1px solid #6ee7b7;
     }
 
     .forgot {
       margin-top: 10px;
       font-size: 0.95rem;
-      color: #000;
+      color: #2563eb;
+    }
+
+    .forgot a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+
+    .forgot a:hover {
+      text-decoration: underline;
+    }
+
+    .register-link {
+      margin-top: 15px;
+      font-size: 0.95rem;
+      color: #333;
+    }
+
+    .register-link a {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .register-link a:hover {
+      text-decoration: underline;
     }
 
     footer {
@@ -119,12 +212,19 @@
 
     footer nav {
       margin: 10px 0;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
     }
 
     footer a {
-      margin: 0 12px;
       text-decoration: none;
       color: black;
+    }
+
+    footer a:hover {
+      color: #2563eb;
     }
 
     .whatsapp {
@@ -144,6 +244,7 @@
       justify-content: center;
       align-items: center;
       text-decoration: none;
+      transition: background-color 0.3s;
     }
 
     .whatsapp:hover {
@@ -154,13 +255,13 @@
 <body>
 
   <!-- Barra lateral redes sociales -->
-<div class="icons-bar">
-  <a href="https://www.instagram.com" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-  <a href="https://www.facebook.com" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-  <a href="https://www.youtube.com" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
-  <a href="https://www.linkedin.com" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-  <a href="https://www.twitter.com" target="_blank" title="Twitter"><i class="fab fa-x-twitter"></i></a>
-</div>
+  <div class="icons-bar">
+    <a href="https://www.instagram.com" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.facebook.com" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://www.youtube.com" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+    <a href="https://www.linkedin.com" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+    <a href="https://www.twitter.com" target="_blank" title="Twitter"><i class="fab fa-x-twitter"></i></a>
+  </div>
 
   <!-- Encabezado -->
   <header>
@@ -174,27 +275,62 @@
   <a href="{% url 'profesores' %}"><button>Profesores</button></a>
   <button id="login-btn">Iniciar sesión</button>
 </div>
-
     </nav>
   </header>
 
   <!-- Sección de inicio de sesión -->
   <section class="login-section" id="login">
     <h2>Inicio de sesión</h2>
-    <form id="login-form">
-      <select id="role" required>
-        <option value="">Rol</option>
-        <option>Estudiante</option>
-        <option>Profesor</option>
-        <option>Administrador</option>
-      </select>
-      <input type="email" id="email" placeholder="Dirección de correo electrónico" required />
-      <input type="password" id="password" placeholder="Contraseña" required />
-      <button type="submit">Iniciar sesión</button>
-    </form>
-    <p class="forgot">¿Olvidó su contraseña?</p>
+    
+    <div class="form-container">
+      <!-- Mostrar mensajes -->
+      {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <!-- Formulario de Login -->
+      <form method="POST" action="{% url 'login' %}">
+        {% csrf_token %}
+        
+        <input 
+          type="email" 
+          name="correo" 
+          placeholder="Dirección de correo electrónico" 
+          required 
+          autocomplete="email"
+        />
+        
+        <input 
+          type="password" 
+          name="contrasena" 
+          placeholder="Contraseña" 
+          required 
+          autocomplete="current-password"
+        />
+        
+        <button type="submit">Iniciar sesión</button>
+      </form>
+
+      <p class="forgot">
+        <a href="#">¿Olvidó su contraseña?</a>
+      </p>
+
+      <p class="register-link">
+        ¿No tienes cuenta? <a href="{% url 'registro' %}">Regístrate aquí</a>
+      </p>
+    </div>
   </section>
 
+  <!-- WhatsApp -->
+  <a href="https://wa.me/573208112507?text=Hola%2C%20necesito%20ayuda%20con%20mi%20curso%20en%20LinguaAcademy" class="whatsapp" target="_blank" title="Contáctanos por WhatsApp">
+    💬
+  </a>
   
   
   <!-- Pie de página -->
@@ -209,70 +345,15 @@
   <p>© 2025 LinguaAcademy. Todos los derechos reservados.</p>
 </footer>
 
-
-
-  <!-- WhatsApp -->
-  <a href="https://wa.me/573208112507?text=Hola%2C%20necesito%20ayuda%20con%20mi%20curso%20en%20LinguaAcademy" class="whatsapp" target="_blank" title="Contáctanos por WhatsApp">
-    💬
-  </a>
-
-  <!-- JavaScript -->
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // Scroll suave al hacer clic en "Iniciar sesión"
-      document.getElementById("login-btn").addEventListener("click", () => {
-        document.getElementById("login").scrollIntoView({ behavior: "smooth" });
+    // Efecto en íconos sociales
+    document.querySelectorAll(".icons-bar a").forEach(icon => {
+      icon.addEventListener("mouseenter", () => {
+        icon.style.transform = "scale(1.2)";
       });
-
-      const loginBtn = document.getElementById("login-btn");
-if (loginBtn) {
-  loginBtn.addEventListener("click", () => {
-    const loginSection = document.getElementById("login");
-    if (loginSection) {
-      // Si estamos en la misma página con la sección de login
-      loginSection.scrollIntoView({ behavior: "smooth" });
-    } else {
-      // Si estamos en otra página, redirigir
-      window.location.href = "{% url 'pantalla_inicio' %}";
-    }
-  });
-}
-
-
-      // Efecto en íconos sociales
-      document.querySelectorAll(".icons-bar a").forEach(icon => {
-        icon.addEventListener("mouseenter", () => {
-          icon.style.transform = "scale(1.2)";
-        });
-        icon.addEventListener("mouseleave", () => {
-          icon.style.transform = "scale(1)";
-        });
+      icon.addEventListener("mouseleave", () => {
+        icon.style.transform = "scale(1)";
       });
-
-      // Validación de formulario
-      const form = document.getElementById("login-form");
-      form.addEventListener("submit", e => {
-        e.preventDefault();
-
-        const role = document.getElementById("role").value;
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-
-        if (!role || !email || !password) {
-          alert("Por favor completa todos los campos.");
-          return;
-        }
-
-        // Simulación de inicio de sesión correcto
-        alert(`Bienvenido, ${role}. ¡Inicio de sesión exitoso!`);
-        form.reset();
-      });
-
-      // WhatsApp dinámico
-      const whatsappLink = document.querySelector(".whatsapp");
-      const phoneNumber = "573208112507"; // Número real
-      const message = encodeURIComponent("¡Hola! Estoy interesado en los cursos de LinguaAcademy.");
-      whatsappLink.href = `https://wa.me/${phoneNumber}?text=${message}`;
     });
   </script>
 

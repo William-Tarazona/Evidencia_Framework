@@ -34,4 +34,9 @@ urlpatterns = [
     path('mis-tickets/', views.mis_tickets, name='mis_tickets'),
     path('ticket/<int:id_ticket>/', views.detalle_ticket, name='detalle_ticket'),
     
+    # Sistema de Chat
+    path('chat/', views.chat_list, name='chat_list'),
+    path('chat/room/<int:user_id>/', views.chat_room, name='chat_room'),
+    path('chat/send/', views.send_message, name='send_message'),
+    path('chat/get/<int:user_id>/', views.get_messages, name='get_messages'),
 ]

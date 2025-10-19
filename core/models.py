@@ -435,3 +435,72 @@ class IdiomaInterfaz(models.Model):
 
     def __str__(self):
         return f"{self.Nombre} ({self.Codigo_idioma})"
+
+
+# -----------------------------------------------------
+# Profesor curso (Relación Muchos a Muchos)
+# -----------------------------------------------------
+
+class ProfesorCurso(models.Model):
+    """
+    Tabla de unión entre Profesor y Curso
+    Permite que un profesor enseñe múltiples cursos
+    y un curso tenga múltiples profesores
+    """
+    idProfesor = models.ForeignKey(
+        Usuario, 
+        on_delete=models.CASCADE,
+        db_column='idProfesor',
+        related_name='cursos_enseña',
+        limit_choices_to={'Rol': 'profesor'}
+    )
+    idCurso = models.ForeignKey(
+        Curso, 
+        on_delete=models.CASCADE,
+        db_column='idCurso',
+        related_name='profesores'
+    )
+    Fecha_asignacion = models.DateTimeField(default=timezone.now)
+    
+    class Meta:
+        db_table = 'ProfesorCurso'
+        verbose_name = 'Profesor-Curso'
+        verbose_name_plural = 'Profesores-Cursos'
+        unique_together = ['idProfesor', 'idCurso']
+    
+    def __str__(self):
+        return f"{self.idProfesor.Nombres} - {self.idCurso.Nombre}"
+
+# -----------------------------------------------------
+# Modelo de chat
+# -----------------------------------------------------
+
+class Chat(models.Model):
+    """Modelo para mensajería interna entre estudiantes y profesores"""
+    id = models.AutoField(primary_key=True)
+    sender = models.ForeignKey(
+        Usuario, 
+        on_delete=models.CASCADE, 
+        related_name='chats_enviados',
+        db_column='sender',
+        to_field='idUsuario'
+    )
+    receiver = models.ForeignKey(
+        Usuario, 
+        on_delete=models.CASCADE, 
+        related_name='chats_recibidos',
+        db_column='receiver',
+        to_field='idUsuario'
+    )
+    message = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+    
+    class Meta:
+        db_table = 'Chat'
+        verbose_name = 'Chat'
+        verbose_name_plural = 'Chats'
+        ordering = ['timestamp']
+    
+    def __str__(self):
+        return f"{self.sender.Nombres} -> {self.receiver.Nombres}: {self.message[:30]}"

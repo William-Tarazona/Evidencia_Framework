@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+{% load static %}
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mensajes - LinguaAcademy</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f3f4f6;
+    }
+
+    header {
+      background-color: #93c5fd;
+      padding: 15px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+    }
+
+    nav img {
+      height: 50px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .nav-buttons a {
+      text-decoration: none;
+    }
+
+    .nav-buttons button {
+      background-color: #f3f4f6;
+      border: 2px solid #333;
+      border-radius: 5px;
+      padding: 8px 16px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+
+    .nav-buttons button:hover {
+      background-color: #2563eb;
+      color: white;
+      border-color: #2563eb;
+    }
+
+    .user-info {
+      background-color: rgba(255,255,255,0.9);
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .logout-btn {
+      background-color: #dc2626;
+    }
+
+    .logout-btn:hover {
+      background-color: #b91c1c;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    .chat-header {
+      background-color: white;
+      padding: 25px;
+      border-radius: 8px 8px 0 0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .chat-header h1 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .chat-header p {
+      color: #666;
+      font-size: 0.95rem;
+    }
+
+    .search-box {
+      background-color: white;
+      padding: 15px 25px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 10px 15px;
+      border: 2px solid #e5e7eb;
+      border-radius: 5px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: #2563eb;
+    }
+
+    .conversations-list {
+      background-color: white;
+      border-radius: 0 0 8px 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .conversation-item {
+      display: flex;
+      align-items: center;
+      padding: 15px 25px;
+      border-bottom: 1px solid #e5e7eb;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .conversation-item:hover {
+      background-color: #f9fafb;
+    }
+
+    .avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-right: 15px;
+      flex-shrink: 0;
+    }
+
+    .conversation-info {
+      flex-grow: 1;
+    }
+
+    .conversation-name {
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .role-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: normal;
+    }
+
+    .role-estudiante {
+      background-color: #dbeafe;
+      color: #1e40af;
+    }
+
+    .role-profesor {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+
+    .last-message {
+      color: #666;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .conversation-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 5px;
+    }
+
+    .message-time {
+      color: #999;
+      font-size: 0.85rem;
+    }
+
+    .unread-badge {
+      background-color: #2563eb;
+      color: white;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #666;
+    }
+
+    .empty-state svg {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 20px;
+      opacity: 0.5;
+    }
+
+    footer {
+      background-color: #f3f4f6;
+      padding: 20px;
+      text-align: center;
+      border-top: 1px solid #ddd;
+      margin-top: 40px;
+    }
+
+    footer p {
+      font-size: 0.9rem;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Encabezado -->
+  <header>
+    <nav>
+      <img src="{% static 'img/LinguaAcademylogo.jpg' %}" alt="LinguaAcademy Logo">
+      <div class="nav-buttons">
+        <a href="{% url 'index' %}"><button>🏠 Inicio</button></a>
+        {% if usuario.Rol == 'estudiante' %}
+          <a href="{% url 'dashboard_estudiante' %}"><button>📊 Mi Panel</button></a>
+        {% elif usuario.Rol == 'profesor' %}
+          <a href="{% url 'dashboard_profesor' %}"><button>📊 Mi Panel</button></a>
+        {% endif %}
+        <div class="user-info">👤 {{ usuario.Nombres }} {{ usuario.Apellidos }}</div>
+        <a href="{% url 'logout' %}"><button class="logout-btn">🚪 Cerrar sesión</button></a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Contenedor principal -->
+  <div class="container">
+    <div class="chat-header">
+      <h1>💬 Mensajes</h1>
+      <p>Comunícate con estudiantes y profesores</p>
+    </div>
+
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="🔍 Buscar conversaciones..." onkeyup="filtrarConversaciones()">
+    </div>
+
+    <div class="conversations-list" id="conversationsList">
+      {% if conversaciones %}
+        {% for conv in conversaciones %}
+          <a href="{% url 'chat_room' conv.usuario.idUsuario %}" class="conversation-item">
+            <div class="avatar">
+              {{ conv.usuario.Nombres.0 }}{{ conv.usuario.Apellidos.0 }}
+            </div>
+            <div class="conversation-info">
+              <div class="conversation-name">
+                {{ conv.usuario.Nombres }} {{ conv.usuario.Apellidos }}
+                <span class="role-badge role-{{ conv.usuario.Rol }}">
+                  {% if conv.usuario.Rol == 'estudiante' %}👨‍🎓{% else %}👨‍🏫{% endif %}
+                  {{ conv.usuario.get_Rol_display }}
+                </span>
+              </div>
+              {% if conv.ultimo_mensaje %}
+                <div class="last-message">
+                  {% if conv.ultimo_mensaje.sender == usuario %}
+                    Tú: {{ conv.ultimo_mensaje.message|truncatewords:8 }}
+                  {% else %}
+                    {{ conv.ultimo_mensaje.message|truncatewords:8 }}
+                  {% endif %}
+                </div>
+              {% else %}
+                <div class="last-message" style="color: #999; font-style: italic;">
+                  Sin mensajes aún
+                </div>
+              {% endif %}
+            </div>
+            <div class="conversation-meta">
+              {% if conv.ultimo_mensaje %}
+                <span class="message-time">{{ conv.ultimo_mensaje.timestamp|date:"H:i" }}</span>
+              {% endif %}
+              {% if conv.unread_count > 0 %}
+                <span class="unread-badge">{{ conv.unread_count }}</span>
+              {% endif %}
+            </div>
+          </a>
+        {% endfor %}
+      {% else %}
+        <div class="empty-state">
+          <p style="font-size: 3rem;">💬</p>
+          <h3>No hay conversaciones</h3>
+          <p>Selecciona un usuario para iniciar una conversación</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Pie de página -->
+  <footer>
+    <p>© 2025 LinguaAcademy. Todos los derechos reservados.</p>
+  </footer>
+
+  <script>
+    function filtrarConversaciones() {
+      const input = document.getElementById('searchInput');
+      const filter = input.value.toLowerCase();
+      const items = document.querySelectorAll('.conversation-item');
+      
+      items.forEach(item => {
+        const name = item.querySelector('.conversation-name').textContent.toLowerCase();
+        if (name.includes(filter)) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
