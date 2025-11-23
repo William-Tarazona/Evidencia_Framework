@@ -20,9 +20,11 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     
     def get_permissions(self):
-        """Permitir registro sin autenticación, el resto requiere login"""
-        if self.action == 'create':
+        """Permitir registro y listado sin autenticación"""
+        # Estas acciones NO requieren autenticación
+        if self.action in ['create', 'list', 'retrieve']:
             return [AllowAny()]
+        # El resto SÍ requiere autenticación
         return [IsAuthenticated()]
     
     def get_serializer_class(self):
